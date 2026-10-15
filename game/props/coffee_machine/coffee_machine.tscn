@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/props/coffee_machine/coffee_machine.gd" id="1_script"]
+
+[node name="CoffeeMachine" type="Area3D"]
+script = ExtResource("1_script")
+footprint = Vector3(0.6, 1.6, 0.5)
+placeholder_color = Color(0.55, 0.25, 0.2, 1)
+duration = 2.0
+approach_offset = Vector3(0, 0, 1.0)

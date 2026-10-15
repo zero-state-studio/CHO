@@ -1,8 +1,9 @@
 class_name ClickRouter
 extends Node
 ## Trasforma il clic (azione "select", un solo puntatore) in un comando per il
-## personaggio. Se colpisce un oggetto con handle_click() lo usa per avere la
-## destinazione; se colpisce il pavimento ci manda il personaggio.
+## personaggio: su un Interactable ci va e ci interagisce; su un oggetto con
+## handle_click() (i bersagli) usa la destinazione che restituisce; sul pavimento
+## ci cammina.
 
 signal destination_chosen(point: Vector3)
 
@@ -22,7 +23,22 @@ func _unhandled_input(event: InputEvent) -> void:
 	var mouse_event := event as InputEventMouseButton
 	if mouse_event == null or camera == null or character == null:
 		return
-	var destination: Variant = _resolve_click(mouse_event.position)
+	var hit: Dictionary = _raycast(mouse_event.position)
+	if hit.is_empty():
+		return
+	var collider: Object = hit["collider"]
+	var interactable := collider as Interactable
+	if interactable:
+		get_viewport().set_input_as_handled()
+		interactable.highlight()
+		character.interact_with(interactable)
+		destination_chosen.emit(interactable.get_approach_point())
+		return
+	var destination: Variant = null
+	if collider.has_method("handle_click"):
+		destination = collider.call("handle_click")
+	elif (hit["normal"] as Vector3).y >= min_floor_normal_y:
+		destination = hit["position"]
 	if destination == null:
 		return
 	get_viewport().set_input_as_handled()
@@ -30,17 +46,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	destination_chosen.emit(destination)
 
 
-func _resolve_click(screen_point: Vector2) -> Variant:
+func _raycast(screen_point: Vector2) -> Dictionary:
 	var origin: Vector3 = camera.project_ray_origin(screen_point)
 	var direction: Vector3 = camera.project_ray_normal(screen_point)
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction * camera.far, click_mask)
-	var hit: Dictionary = camera.get_world_3d().direct_space_state.intersect_ray(query)
-	if hit.is_empty():
-		return null
-	var collider: Object = hit["collider"]
-	if collider.has_method("handle_click"):
-		return collider.call("handle_click")
-	var normal: Vector3 = hit["normal"]
-	if normal.y >= min_floor_normal_y:
-		return hit["position"]
-	return null
+	# Le aree di clic degli oggetti interattivi sono Area3D.
+	query.collide_with_areas = true
+	return camera.get_world_3d().direct_space_state.intersect_ray(query)

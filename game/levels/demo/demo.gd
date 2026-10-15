@@ -63,6 +63,8 @@ func _spawn_character(new_role: StringName, spawn_transform: Transform3D) -> voi
 		character.queue_free()
 	role = new_role
 	character = scene.instantiate() as RubberCharacter
+	# Il gruppo "player" lo usano gli oggetti che cercano il personaggio giocabile.
+	character.add_to_group(&"player")
 	add_child(character)
 	character.global_transform = spawn_transform
 	_camera_rig.target = character

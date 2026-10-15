@@ -1,13 +1,26 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://game/characters/rubber/rubber_character.gd" id="1_script"]
 [ext_resource type="Script" path="res://game/characters/rubber/rubber_body.gd" id="2_body"]
 [ext_resource type="Material" path="res://assets/materials/mat_character_toon.tres" id="3_toon"]
 [ext_resource type="Resource" path="res://data/characters/colleague.tres" id="4_look"]
+[ext_resource type="Script" path="res://game/ui/hud/progress_bar_3d.gd" id="5_progress"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
 height = 1.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_task"]
+size = Vector3(0.4, 0.14, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_task"]
+albedo_color = Color(0.98, 0.97, 0.9, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_folder"]
+size = Vector3(0.42, 0.03, 0.32)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_folder"]
+albedo_color = Color(0.95, 0.75, 0.2, 1)
 
 [node name="RubberCharacter" type="CharacterBody3D"]
 collision_layer = 2
@@ -30,3 +43,20 @@ target_desired_distance = 0.2
 path_height_offset = 0.0
 height = 1.6
 radius = 0.35
+
+[node name="ProgressBar3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, 0)
+script = ExtResource("5_progress")
+
+[node name="CarriedTask" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0.45)
+visible = false
+
+[node name="Paper" type="MeshInstance3D" parent="CarriedTask"]
+mesh = SubResource("BoxMesh_task")
+surface_material_override/0 = SubResource("StandardMaterial3D_task")
+
+[node name="Folder" type="MeshInstance3D" parent="CarriedTask"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.085, 0)
+mesh = SubResource("BoxMesh_folder")
+surface_material_override/0 = SubResource("StandardMaterial3D_folder")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://game/levels/demo/demo.gd" id="demo"]
 [ext_resource type="PackedScene" path="res://game/characters/junior/junior.tscn" id="junior"]
@@ -13,6 +13,12 @@
 [ext_resource type="Script" path="res://game/core/input/click_marker.gd" id="marker"]
 [ext_resource type="PackedScene" path="res://game/ui/hud/zoom_buttons.tscn" id="zoom"]
 [ext_resource type="Script" path="res://game/ui/debug/debug_panel.gd" id="debug"]
+[ext_resource type="PackedScene" path="res://game/props/printer/printer.tscn" id="printer"]
+[ext_resource type="PackedScene" path="res://game/props/coffee_machine/coffee_machine.tscn" id="coffee"]
+[ext_resource type="PackedScene" path="res://game/props/desk/desk.tscn" id="desk"]
+[ext_resource type="PackedScene" path="res://game/props/collapse_button/collapse_button.tscn" id="collapse"]
+[ext_resource type="Script" path="res://game/props/physics/physics_prop.gd" id="prop"]
+[ext_resource type="Script" path="res://game/props/paper_launcher/paper_launcher.gd" id="launcher"]
 
 [sub_resource type="Environment" id="Environment_demo"]
 background_mode = 1
@@ -246,6 +252,75 @@ step_depth = 0.4
 width = 2.0
 color = Color(0.55, 0.58, 0.66, 1)
 
+[node name="Interaction" type="Node3D" parent="NavigationRegion3D"]
+
+[node name="Printer" parent="NavigationRegion3D/Interaction" instance=ExtResource("printer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -14.6)
+
+[node name="CoffeeMachine" parent="NavigationRegion3D/Interaction" instance=ExtResource("coffee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.8)
+
+[node name="Desk" parent="NavigationRegion3D/Interaction" instance=ExtResource("desk")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4.5, 0, -5.5)
+
+[node name="PhysicsZone" type="Node3D" parent="NavigationRegion3D"]
+
+[node name="PaperLauncher" type="StaticBody3D" parent="NavigationRegion3D/PhysicsZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.6, 0, -14.6)
+script = ExtResource("launcher")
+
+[node name="CollapseButton" parent="NavigationRegion3D/PhysicsZone" instance=ExtResource("collapse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -3)
+
+[node name="PhysicsProps" type="Node3D" parent="."]
+
+[node name="Box1" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0.05, -12.5)
+script = ExtResource("prop")
+box_size = Vector3(0.6, 0.6, 0.6)
+
+[node name="Box2" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.3, 0.05, -12.2)
+script = ExtResource("prop")
+box_size = Vector3(0.5, 0.5, 0.5)
+
+[node name="Box3" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.9, 0.7, -12.4)
+script = ExtResource("prop")
+box_size = Vector3(0.45, 0.45, 0.45)
+
+[node name="Box4" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.05, -13.4)
+script = ExtResource("prop")
+box_size = Vector3(0.7, 0.5, 0.7)
+
+[node name="Chair1" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, 16, 0.05, -13)
+script = ExtResource("prop")
+kind = 1
+color = Color(0.3, 0.45, 0.7, 1)
+
+[node name="Chair2" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 17.5, 0.05, -10.5)
+script = ExtResource("prop")
+kind = 1
+color = Color(0.3, 0.45, 0.7, 1)
+
+[node name="Chair3" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(-0.766044, 0, 0.642788, 0, 1, 0, -0.642788, 0, -0.766044, 14.5, 0.05, -8.5)
+script = ExtResource("prop")
+kind = 1
+color = Color(0.3, 0.45, 0.7, 1)
+
+[node name="SwivelChair" type="RigidBody3D" parent="PhysicsProps"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0.05, -5)
+script = ExtResource("prop")
+kind = 2
+color = Color(0.2, 0.2, 0.25, 1)
+friction = 0.05
+mass = 4.0
+angular_damp = 0.2
+
 [node name="Targets" type="Node3D" parent="."]
 
 [node name="BigOpen" type="StaticBody3D" parent="Targets"]
@@ -286,7 +361,7 @@ radius = 0.3
 [node name="ZoneLabels" type="Node3D" parent="."]
 
 [node name="Movement" type="Label3D" parent="ZoneLabels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 3.2, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 2.9, -15.4)
 billboard = 1
 pixel_size = 0.01
 text = "UI_DEMO_ZONE_MOVEMENT"
@@ -295,7 +370,7 @@ outline_size = 24
 modulate = Color(0.15, 0.15, 0.2, 1)
 
 [node name="Interaction" type="Label3D" parent="ZoneLabels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.9, -15.4)
 billboard = 1
 pixel_size = 0.01
 text = "UI_DEMO_ZONE_INTERACTION"
@@ -304,7 +379,7 @@ outline_size = 24
 modulate = Color(0.15, 0.15, 0.2, 1)
 
 [node name="Physics" type="Label3D" parent="ZoneLabels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 3.2, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 2.9, -15.4)
 billboard = 1
 pixel_size = 0.01
 text = "UI_DEMO_ZONE_PHYSICS"
@@ -313,7 +388,7 @@ outline_size = 24
 modulate = Color(0.15, 0.15, 0.2, 1)
 
 [node name="Showcase" type="Label3D" parent="ZoneLabels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 3.2, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.9, 0.6)
 billboard = 1
 pixel_size = 0.01
 text = "UI_DEMO_ZONE_SHOWCASE"
@@ -322,7 +397,7 @@ outline_size = 24
 modulate = Color(0.15, 0.15, 0.2, 1)
 
 [node name="Audio" type="Label3D" parent="ZoneLabels"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 3.2, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.9, 0.6)
 billboard = 1
 pixel_size = 0.01
 text = "UI_DEMO_ZONE_AUDIO"

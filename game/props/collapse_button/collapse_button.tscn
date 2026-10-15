@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/props/collapse_button/collapse_button.gd" id="1_script"]
+
+[node name="CollapseButton" type="Area3D"]
+script = ExtResource("1_script")
+footprint = Vector3(0.8, 0.12, 0.8)
+placeholder_color = Color(0.9, 0.15, 0.15, 1)
+duration = 0.0
+approach_offset = Vector3(0, 0, 0)
+solid = false
+min_click_height = 0.6

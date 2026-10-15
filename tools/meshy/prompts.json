@@ -1,0 +1,67 @@
+{
+  "_note": "Prompt e impostazioni degli oggetti del livello demo (Sprint 1). Si generano con tools/meshy/generate_props.py.",
+  "style_prompt": "Stylized cartoon game asset for a satirical office game, chunky rounded shapes, slightly exaggerated toy-like proportions, soft bevels, simple clean silhouette, single isolated object, no text, no logos, no brand names.",
+  "texture_prompt": "Flat saturated cartoon colors, clean simple surfaces, matte plastic look, no text, no logos, no dirt, no photographic details.",
+  "preview": {
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": ["glb"],
+    "moderation": true
+  },
+  "refine": {
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": ["glb"],
+    "moderation": true
+  },
+  "credits": {
+    "preview": 5,
+    "refine": 10
+  },
+  "triangle_budget": 1500,
+  "props": [
+    {
+      "id": "desk",
+      "prompt": "A simple office desk with a flat wooden top, rounded corners and a small drawer unit on one side.",
+      "target_polycount": 1200
+    },
+    {
+      "id": "swivel_chair",
+      "prompt": "An office swivel chair with a five-star wheeled base, a rounded padded seat, a rounded backrest and two armrests.",
+      "target_polycount": 1200
+    },
+    {
+      "id": "printer",
+      "prompt": "A bulky office laser printer with a paper tray at the front and an output slot on top, rounded edges.",
+      "target_polycount": 1000
+    },
+    {
+      "id": "coffee_machine",
+      "prompt": "A chunky countertop espresso coffee machine with a big round button, a spout and one small cup under the spout.",
+      "target_polycount": 1000
+    },
+    {
+      "id": "filing_cabinet",
+      "prompt": "A metal office filing cabinet with three drawers and round handles.",
+      "target_polycount": 600
+    },
+    {
+      "id": "plant",
+      "prompt": "A potted office plant with a few big rounded leaves in a simple round pot.",
+      "target_polycount": 1200
+    },
+    {
+      "id": "task_stack",
+      "prompt": "A messy stack of paper documents and cardboard folders, a few sheets sticking out.",
+      "target_polycount": 500
+    },
+    {
+      "id": "paper_ball",
+      "prompt": "A crumpled ball of white paper.",
+      "target_polycount": 200
+    }
+  ]
+}
