@@ -1,0 +1,18 @@
+keys,en,it
+UI_PLAY,Play,Gioca
+UI_CONTINUE,Continue,Continua
+UI_OPTIONS,Options,Opzioni
+UI_PAUSE,Pause,Pausa
+UI_QUIT,Quit,Esci
+UI_RETRY,Retry,Riprova
+ROLE_JUNIOR,Junior,Junior
+ROLE_MANAGER,Toxic Manager,Manager tossico
+HUD_ENERGY,Energy,Energia
+HUD_STRESS,Stress,Stress
+HUD_REPUTATION,Reputation,Reputazione
+HUD_EGO,Ego,Ego
+HUD_BONUS,Bonus,Bonus
+HUD_MEAL_VOUCHERS,Meal vouchers,Buoni pasto
+MISSION_MEETING_EMAIL,This Meeting Could Have Been an Email,Questa riunione poteva essere una mail
+MISSION_NEEDED_YESTERDAY,Needed It Yesterday,Per ieri
+MISSION_GOT_A_MINUTE,Got a Minute?,Hai un minuto?
