@@ -16,3 +16,17 @@ HUD_MEAL_VOUCHERS,Meal vouchers,Buoni pasto
 MISSION_MEETING_EMAIL,This Meeting Could Have Been an Email,Questa riunione poteva essere una mail
 MISSION_NEEDED_YESTERDAY,Needed It Yesterday,Per ieri
 MISSION_GOT_A_MINUTE,Got a Minute?,Hai un minuto?
+UI_ZOOM_IN,+,+
+UI_ZOOM_OUT,−,−
+UI_DEBUG_TOGGLE,Debug,Debug
+UI_DEBUG_FPS,FPS: {value},FPS: {value}
+UI_DEBUG_DRAW_CALLS,Draw calls: {value},Draw call: {value}
+UI_DEBUG_ZOOM,Zoom,Zoom
+UI_DEBUG_TIME_SCALE,Time speed,Velocità del tempo
+UI_DEBUG_WALL_FADE,Fade walls,Dissolvenza pareti
+UI_DEBUG_RESET,Reset scene,Reset della scena
+UI_DEMO_ZONE_MOVEMENT,Movement,Movimento
+UI_DEMO_ZONE_INTERACTION,Interaction,Interazione
+UI_DEMO_ZONE_PHYSICS,Physics,Fisica
+UI_DEMO_ZONE_SHOWCASE,Showcase,Vetrina
+UI_DEMO_ZONE_AUDIO,Audio,Audio
