@@ -1,0 +1,6 @@
+# Dipendenze degli script della pipeline (tools/).
+# Installazione: python3 -m venv tools/.venv && tools/.venv/bin/pip install -r tools/requirements.txt
+requests==2.32.5
+python-dotenv==1.1.1
+soundfile==0.13.1
+numpy==2.3.3

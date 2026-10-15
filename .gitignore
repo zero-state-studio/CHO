@@ -1,1 +1,26 @@
+# Godot: cache e file generati
+.godot/
+/android/
+
+# Build esportate
+/builds/
+
+# File temporanei
+*.tmp
+*.blend1
+*.blend2
+
+# Sistema operativo
 .DS_Store
+Thumbs.db
+
+# Chiavi e segreti
+.env
+
+# Python (script in tools/)
+.venv/
+__pycache__/
+*.pyc
+
+# Traduzioni compilate da Godot all'import
+localization/*.translation

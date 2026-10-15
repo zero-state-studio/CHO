@@ -6,6 +6,8 @@
 
 - [Godot 4.7.2](https://godotengine.org/), versione standard (non .NET)
 - Git con [Git LFS](https://git-lfs.com/)
+- Python 3, per gli script in `tools/` (Blender per ora non serve: è rinviato)
+- Un file `.env` con le chiavi di ElevenLabs, Meshy e Scenario: copiate `.env.example` e compilatelo (non va mai committato)
 
 ## Primo avvio
 
@@ -21,4 +23,5 @@ Poi in Godot: **Importa** → selezionate `project.godot`. Al primo avvio Godot 
 - `docs/specifiche-del-gioco.md` — cos'è il gioco e cosa abbiamo deciso
 - `docs/piano-prototipo.md` — cosa stiamo facendo adesso
 - `docs/guida-di-stile.md` — regole per gli asset
+- `docs/registro-asset.csv` — ogni asset generato con l'IA, con strumento e prompt
 - `CLAUDE.md` — struttura delle cartelle, convenzioni e regole del progetto (le legge anche Claude)
