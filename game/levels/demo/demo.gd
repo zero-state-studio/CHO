@@ -55,6 +55,11 @@ func _ready() -> void:
 		_debug_panel.show_role(role)
 		_camera_rig.zoom_changed.connect(_debug_panel.show_zoom)
 
+	if Benchmark.is_requested():
+		var benchmark := Benchmark.new()
+		benchmark.character = character
+		add_child(benchmark)
+
 
 ## Mette in scena il personaggio del ruolo indicato, al posto di quello attuale.
 func _spawn_character(new_role: StringName, spawn_transform: Transform3D) -> void:
