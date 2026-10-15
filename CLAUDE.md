@@ -122,15 +122,15 @@ I personaggi sono **pupazzi 3D gommosi e snodati, in stile Human Fall Flat**. È
 | Strumento | Per cosa | Script |
 |---|---|---|
 | Meshy (API) | Oggetti e arredi: scrivanie, sedie, stampante, macchinetta del caffè... | `tools/meshy/` |
-| Scenario (API) | Concept, texture, icone dell'interfaccia, riferimenti per la guida di stile | `tools/scenario/` |
-| ElevenLabs (API) | Versi, effetti sonori, musica segnaposto | `tools/elevenlabs/` |
+| Scenario (server MCP, con il login dell'utente) | Concept, texture, icone dell'interfaccia, riferimenti per la guida di stile | `tools/scenario/` (prompt e parametri) |
+| ElevenLabs (server MCP, con il login dell'utente) | Versi, effetti sonori, musica segnaposto | `tools/elevenlabs/` (prompt e parametri) |
 
 - **Personaggi:** costruiti in Godot (vedi "Stile dei personaggi"), non generati.
 - **Blender: rinviato.** La cartella `tools/blender/` resta vuota per il futuro.
 - **Qualità media nel prototipo:** modalità di generazione leggere ed economiche, texture da 512 px. La rifinitura arriva con il vertical slice.
 - **Poligoni degli oggetti Meshy tenuti bassi senza ritocchi a mano:** poligoni di destinazione bassi e remesh dalle opzioni di Meshy, texture limitate a 512 px dalle impostazioni d'importazione di Godot. Il `.glb` va direttamente in `assets/models/props/`. Se un oggetto sfora i budget delle specifiche (§6.2) si rigenera, non si corregge a mano.
-- **Script riutilizzabili:** ogni generazione passa da uno script in `tools/` con i prompt salvati, così chiunque nel team può rifarla. Dipendenze Python in `tools/requirements.txt`, dentro un ambiente virtuale.
-- **Chiavi API solo in `.env`** (i nomi delle variabili sono in `.env.example`): mai nel codice, mai nei log, mai committate.
+- **Generazioni ripetibili:** Meshy passa da uno script in `tools/meshy/` con la chiave in `.env`. Scenario ed ElevenLabs si usano dai loro server MCP, con il login dell'utente (decisione del 15 ottobre 2026: le chiavi API di questi due servizi non ci sono). Per ogni generazione si salvano in `tools/<strumento>/prompts.json` prompt, modello e parametri esatti, così chiunque nel team può rifarla. Dipendenze Python in `tools/requirements.txt`, dentro un ambiente virtuale.
+- **Chiavi API solo in `.env`** (i nomi delle variabili sono in `.env.example`; quelle di Scenario ed ElevenLabs sono facoltative): mai nel codice, mai nei log, mai committate.
 - **Prima di spendere crediti** mostra cosa generi, con i prompt esatti e una stima dei crediti, e aspetta l'ok. Lavora a lotti piccoli: 2-3 varianti, poi si sceglie.
 - Il risultato grezzo va in `source_assets/ai_raw/<strumento>/`, la versione pulita in `assets/`.
 - **Ogni asset generato va in `docs/registro-asset.csv`:** serve per la dichiarazione dei contenuti IA su Steam e per le licenze.

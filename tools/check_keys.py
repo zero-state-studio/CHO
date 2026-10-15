@@ -22,12 +22,14 @@ ELEVENLABS_SUBSCRIPTION_URL: str = "https://api.elevenlabs.io/v1/user/subscripti
 # è gratuito e basta a verificare chiave e segreto.
 SCENARIO_MODELS_URL: str = "https://api.cloud.scenario.com/v1/models"
 
-REQUIRED_VARIABLES: tuple[str, ...] = (
-    "ELEVENLABS_API_KEY",
-    "MESHY_API_KEY",
-    "SCENARIO_API_KEY",
-    "SCENARIO_API_SECRET",
-)
+# Variabili necessarie per ogni servizio. Scenario ed ElevenLabs si usano anche dai
+# server MCP con il login dell'utente: se le loro chiavi mancano, il controllo si salta.
+SERVICE_VARIABLES: dict[str, tuple[str, ...]] = {
+    "Meshy": ("MESHY_API_KEY",),
+    "ElevenLabs": ("ELEVENLABS_API_KEY",),
+    "Scenario": ("SCENARIO_API_KEY", "SCENARIO_API_SECRET"),
+}
+OPTIONAL_SERVICES: tuple[str, ...] = ("ElevenLabs", "Scenario")
 
 
 def check_meshy() -> str:
@@ -70,11 +72,6 @@ def check_scenario() -> str:
 
 def main() -> int:
     load_env()
-    missing: list[str] = [name for name in REQUIRED_VARIABLES if not is_set(name)]
-    if missing:
-        print("Variabili vuote in .env: " + ", ".join(missing))
-        return 1
-
     checks: dict[str, Callable[[], str]] = {
         "Meshy": check_meshy,
         "ElevenLabs": check_elevenlabs,
@@ -82,6 +79,14 @@ def main() -> int:
     }
     failures: int = 0
     for service, check in checks.items():
+        missing: list[str] = [name for name in SERVICE_VARIABLES[service] if not is_set(name)]
+        if missing:
+            if service in OPTIONAL_SERVICES:
+                print(f"{service}: chiave non configurata, si usa il server MCP con il login")
+            else:
+                failures += 1
+                print(f"{service}: variabili vuote in .env: " + ", ".join(missing))
+            continue
         try:
             print(f"{service}: OK, {check()}")
         except requests.HTTPError as error:
