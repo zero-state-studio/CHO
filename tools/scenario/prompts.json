@@ -1,0 +1,156 @@
+{
+  "_info": "Generazioni Scenario del prototipo, fatte dal server MCP di Scenario con il login dell'utente. Per rifarle: stesso model_id e stessi parameters con model_run (team e progetto in 'workspace'). I costi sono in Creative Units (CU), stimati con dry_run. Esiti: 'chosen_asset' è la variante scelta (provvisoria, da approvare dall'art director), 'other_assets' le altre; i file grezzi sono in source_assets/ai_raw/scenario/<batch>/.",
+  "workspace": {
+    "team_id": "team_boscukTE1AfcStGzcGfPCBSq",
+    "project_id": "proj_e3G6TyKNVH3TRmGEBhrB8Aym"
+  },
+  "batches": [
+    {
+      "batch": "sprint1-texture",
+      "model_id": "model_patina-material",
+      "model_name": "PATINA Material",
+      "estimated_cu_per_item": 7,
+      "items": [
+        {
+          "output": "assets/textures/tex_floor_carpet.png",
+          "parameters": {
+            "prompt": "stylized cartoon office carpet tiles, short low-pile commercial carpet in muted blue-grey with subtle darker speckles, soft hand-painted look, flat even lighting, no shadows, top-down view",
+            "width": 512,
+            "height": 512,
+            "maps": [],
+            "tilingMode": "both",
+            "tileSize": 64,
+            "tileStride": 32,
+            "numOutputs": 2,
+            "enablePromptExpansion": false,
+            "seed": 1015
+          },
+          "job_id": "job_G1Erez9SoCjGJtTab3Ngo2eT",
+          "cu_spent": 7,
+          "chosen_asset": "asset_K65UZrqqHhmygUzhsT7gv4oD",
+          "other_assets": [
+            "asset_rDHMSdFd1WiRzEHTo547zx1a"
+          ]
+        },
+        {
+          "output": "assets/textures/tex_wall_plaster.png",
+          "parameters": {
+            "prompt": "stylized cartoon office wall, smooth warm cream painted plaster with a very subtle paint roller texture, soft hand-painted look, flat even lighting, no shadows, front view",
+            "width": 512,
+            "height": 512,
+            "maps": [],
+            "tilingMode": "both",
+            "tileSize": 64,
+            "tileStride": 32,
+            "numOutputs": 2,
+            "enablePromptExpansion": false,
+            "seed": 1015
+          },
+          "job_id": "job_1j3jvKQRfpyW3LT3cvzCdSgF",
+          "cu_spent": 7,
+          "chosen_asset": "asset_9oN8QggPMfreW4o6wy9qsT9T",
+          "other_assets": [
+            "asset_jaYLk1iwqGA4WsufdkUWLGLT",
+            "asset_8oSDt4EdcacynGSn5wHy3J8z"
+          ]
+        }
+      ]
+    },
+    {
+      "batch": "sprint1-icone",
+      "model_id": "model_openai-gpt-image-2-5-flare",
+      "model_name": "GPT Image 2.5 Flare",
+      "estimated_cu_per_item": 6,
+      "prompt_template": "Flat cartoon game UI icon of {soggetto}. Thick dark outline, saturated colors, simple rounded shapes, single object centered, no text, readable at 64 pixels.",
+      "common_parameters": {
+        "width": 1024,
+        "height": 1024,
+        "numOutputs": 2,
+        "quality": "medium",
+        "background": "transparent"
+      },
+      "items": [
+        {
+          "output": "assets/ui/ui_icon_energy.png",
+          "soggetto": "a chunky battery with a lightning bolt and a bright green charge level",
+          "job_id": "job_FdTmXQZhCaFadqdZnHFMeHGr",
+          "cu_spent": 6,
+          "chosen_asset": "asset_URUznA7PSMhzxBoQoiUjGnbC",
+          "other_assets": [
+            "asset_tM4MG5C9AoB2Vy9T32RqRhTe"
+          ]
+        },
+        {
+          "output": "assets/ui/ui_icon_stress.png",
+          "soggetto": "a round pressure gauge with the needle deep in the red zone and small puffs of steam",
+          "job_id": "job_cQPnoLW3RvqnXviJb1F4HzEU",
+          "cu_spent": 6,
+          "chosen_asset": "asset_ofd3Un8XmAn8WyfiL3uNKEEo",
+          "other_assets": [
+            "asset_BV7Kw2fKUQfkv4un5WsQWqnL"
+          ]
+        },
+        {
+          "output": "assets/ui/ui_icon_coffee.png",
+          "soggetto": "a white office coffee mug full of coffee with curling steam",
+          "job_id": "job_fRvorDiEw2HUi8S4rNd4NR23",
+          "cu_spent": 6,
+          "chosen_asset": "asset_TFZw8yJn1uMaHrD8A1GJ9d5B",
+          "other_assets": [
+            "asset_sFeJCWx8x56dCNZn87evCbfb"
+          ]
+        },
+        {
+          "output": "assets/ui/ui_icon_task.png",
+          "soggetto": "a yellow paper folder stuffed with documents and a red urgent stamp mark without any letters",
+          "job_id": "job_YwTevMF5whr8D7zcVYguDjsw",
+          "cu_spent": 6,
+          "chosen_asset": "asset_jspnGusV6c7h8snZwC3hLZFG",
+          "other_assets": [
+            "asset_dxQLhzXYGqG4QpfLtj6PhFyW"
+          ]
+        }
+      ]
+    },
+    {
+      "batch": "sprint1-concept",
+      "model_id": "model_bfl-flux-2-klein-9b",
+      "model_name": "FLUX.2 Klein 9b",
+      "estimated_cu_per_item": 2,
+      "common_parameters": {
+        "width": 1536,
+        "height": 864,
+        "numOutputs": 2,
+        "seed": 1015
+      },
+      "items": [
+        {
+          "output": "docs/guida-di-stile/riferimenti/concept_junior.png",
+          "prompt": "Character concept sheet with front, side and back view of a rubbery jointed 3D cartoon toy puppet office worker, the Junior: soft bean-shaped body, round smooth head with short brown hair, two dot eyes, no mouth, segmented rounded limbs with visible ball joints, mitten hands without fingers, oversized light blue shirt, ID badge on a lanyard, small orange backpack, dark trousers, white sneakers, matte rubber material, toon shading with dark outline, saturated colors, plain light grey background",
+          "job_id": "job_YjhhEZjnsnc5PM4NjPxSgJ6K",
+          "cu_spent": 2,
+          "chosen_asset": "asset_dJc1Ei3jss64ccRHYxs51iQU",
+          "other_assets": [
+            "asset_oS8cbELcaSDN1j3eHbmr9XnD"
+          ]
+        },
+        {
+          "output": "docs/guida-di-stile/riferimenti/concept_manager.png",
+          "prompt": "Character concept sheet with front, side and back view of a rubbery jointed 3D cartoon toy puppet office worker, the toxic Manager: soft bean-shaped body, round smooth tanned head with slicked black hair, two dot eyes and a fixed wide white grin, segmented rounded limbs with visible ball joints, mitten hands without fingers, shiny navy suit jacket, huge red tie over a white shirt front, polished black shoes, matte rubber body with a glossy jacket, toon shading with dark outline, saturated colors, plain light grey background",
+          "job_id": "job_7tVeXBwibQRLuMq1ZgQ8J3mS",
+          "cu_spent": 2,
+          "chosen_asset": "asset_pATcKpUEH4ZsXSNGVJE3N2XP",
+          "other_assets": [
+            "asset_kT6MSC6PcaHv5n7pqxwZpZey"
+          ]
+        }
+      ]
+    }
+  ],
+  "run": {
+    "date": "2026-10-15",
+    "total_cu": 42,
+    "wall_clock_minutes": 10,
+    "note": "Piano Pro: al massimo 7 lavori in parallelo, l'ottavo è stato rilanciato. PATINA Material ha generato anche le mappe PBR (normal, roughness, height, metalness) nonostante maps=[], senza costi in più: sono nei file grezzi, non usate."
+  }
+}

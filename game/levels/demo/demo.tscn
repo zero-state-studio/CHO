@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://game/levels/demo/demo.gd" id="demo"]
 [ext_resource type="PackedScene" path="res://game/characters/junior/junior.tscn" id="junior"]
@@ -19,6 +19,8 @@
 [ext_resource type="Script" path="res://game/props/physics/physics_prop.gd" id="prop"]
 [ext_resource type="Script" path="res://game/props/paper_launcher/paper_launcher.gd" id="launcher"]
 [ext_resource type="Script" path="res://game/levels/demo/showcase.gd" id="showcase"]
+[ext_resource type="Texture2D" path="res://assets/textures/tex_floor_carpet.png" id="tex_floor"]
+[ext_resource type="Texture2D" path="res://assets/textures/tex_wall_plaster.png" id="tex_wall"]
 
 [sub_resource type="Environment" id="Environment_demo"]
 background_mode = 1
@@ -57,7 +59,8 @@ navigation_mesh = SubResource("NavigationMesh_demo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 script = ExtResource("block")
 size = Vector3(48, 0.2, 32)
-color = Color(0.36, 0.42, 0.52, 1)
+color = Color(0.78, 0.82, 0.9, 1)
+texture = ExtResource("tex_floor")
 
 [node name="Walls" type="Node3D" parent="NavigationRegion3D"]
 
@@ -65,105 +68,120 @@ color = Color(0.36, 0.42, 0.52, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -16.1)
 script = ExtResource("block")
 size = Vector3(48.4, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="South" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 16.1)
 script = ExtResource("block")
 size = Vector3(48.4, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="West" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.1, 1.25, 0)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 32)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="East" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.1, 1.25, 0)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 32)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="MovementInteractionA" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.25, -12.75)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 6.5)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="MovementInteractionB" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.25, -3.25)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 6.5)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="InteractionPhysicsA" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.25, -12.75)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 6.5)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="InteractionPhysicsB" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.25, -3.25)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 6.5)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="Middle1" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5, 1.25, 0)
 script = ExtResource("block")
 size = Vector3(7, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="Middle2" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 1.25, 0)
 script = ExtResource("block")
 size = Vector3(9, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="Middle3" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 script = ExtResource("block")
 size = Vector3(4, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="Middle4" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 1.25, 0)
 script = ExtResource("block")
 size = Vector3(9, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="Middle5" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5, 1.25, 0)
 script = ExtResource("block")
 size = Vector3(7, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="ShowcaseAudioA" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 3.25)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 6.5)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="ShowcaseAudioB" type="StaticBody3D" parent="NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 12.75)
 script = ExtResource("block")
 size = Vector3(0.2, 2.5, 6.5)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="Movement" type="Node3D" parent="NavigationRegion3D"]
@@ -214,21 +232,24 @@ fadeable = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.3, 1.25, -7)
 script = ExtResource("block")
 size = Vector3(3.4, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="DoorWallRight" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.7, 1.25, -7)
 script = ExtResource("block")
 size = Vector3(3.4, 2.5, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="DoorLintel" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 2.35, -7)
 script = ExtResource("block")
 size = Vector3(1.2, 0.3, 0.2)
-color = Color(0.8, 0.74, 0.64, 1)
+color = Color(0.92, 0.88, 0.82, 1)
+texture = ExtResource("tex_wall")
 fadeable = true
 
 [node name="Platform" type="StaticBody3D" parent="NavigationRegion3D/Movement"]

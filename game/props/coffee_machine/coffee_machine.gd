@@ -5,18 +5,12 @@ extends Interactable
 
 signal coffee_served(character: RubberCharacter)
 
-## Colore della tazzina che sale sopra il personaggio.
-@export var cup_color: Color = Color(0.45, 0.28, 0.15)
+## Icona che sale sopra il personaggio a caffè pronto.
+@export var coffee_icon: Texture2D = preload("res://assets/ui/ui_icon_coffee.png")
 ## Altezza dell'icona sopra i piedi del personaggio, in metri.
 @export var icon_height: float = 2.0
 
 
 func _on_completed(character: RubberCharacter) -> void:
-	var cup := CylinderMesh.new()
-	cup.top_radius = 0.12
-	cup.bottom_radius = 0.09
-	cup.height = 0.18
-	cup.radial_segments = 12
-	cup.rings = 1
-	FeedbackPop.spawn(get_parent(), character.global_position + Vector3.UP * icon_height, cup, cup_color)
+	FeedbackPop.spawn_icon(get_parent(), character.global_position + Vector3.UP * icon_height, coffee_icon)
 	coffee_served.emit(character)

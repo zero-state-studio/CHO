@@ -25,6 +25,19 @@ static func spawn(parent: Node, at: Vector3, icon_mesh: Mesh, color: Color) -> F
 	return pop
 
 
+## Come spawn, ma con un'icona 2D (per esempio da assets/ui/) su un quadrato
+## sempre rivolto alla telecamera.
+static func spawn_icon(parent: Node, at: Vector3, icon: Texture2D, size: float = 0.5) -> FeedbackPop:
+	var quad := QuadMesh.new()
+	quad.size = Vector2(size, size)
+	var pop := spawn(parent, at, quad, Color.WHITE)
+	var material := pop.material_override as StandardMaterial3D
+	material.albedo_texture = icon
+	material.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	material.no_depth_test = true
+	return pop
+
+
 func _play(material: StandardMaterial3D) -> void:
 	scale = Vector3.ONE * 0.4
 	var tween: Tween = create_tween().set_parallel()

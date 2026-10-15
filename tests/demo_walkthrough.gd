@@ -23,7 +23,7 @@ const WAYPOINTS: Array = [
 	["zona interazione", Vector3(0.0, 0.0, -8.0), -1.0],
 	["zona fisica", Vector3(16.0, 0.0, -8.0), -1.0],
 	["zona audio", Vector3(16.0, 0.0, 8.0), -1.0],
-	["zona vetrina", Vector3(-12.0, 0.0, 8.0), -1.0],
+	["zona vetrina (corsia libera accanto alla vetrina)", Vector3(-1.0, 0.0, 12.0), -1.0],
 	["ritorno al movimento", Vector3(-20.0, 0.0, -3.0), -1.0],
 ]
 

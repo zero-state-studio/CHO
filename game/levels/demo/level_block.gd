@@ -15,6 +15,17 @@ const FADE_GROUP: StringName = &"fade_occluder"
 	set(value):
 		color = value
 		_rebuild()
+## Texture ripetibile (moquette, intonaco...), proiettata nel mondo: si ripete alla
+## stessa scala su blocchi di qualunque dimensione. Il colore la tinge.
+@export var texture: Texture2D:
+	set(value):
+		texture = value
+		_rebuild()
+## Quanti metri copre una ripetizione della texture.
+@export var texture_meters: float = 2.0:
+	set(value):
+		texture_meters = value
+		_rebuild()
 @export var fadeable: bool = false
 ## Opacità quando il blocco copre il personaggio.
 @export_range(0.0, 1.0) var faded_alpha: float = 0.2
@@ -64,6 +75,10 @@ func _rebuild() -> void:
 	box_mesh.size = size
 	_mesh_instance.mesh = box_mesh
 	_material.albedo_color = color
+	_material.albedo_texture = texture
+	_material.uv1_triplanar = texture != null
+	_material.uv1_world_triplanar = texture != null
+	_material.uv1_scale = Vector3.ONE / maxf(texture_meters, 0.01)
 	_mesh_instance.material_override = _material
 	var box_shape := BoxShape3D.new()
 	box_shape.size = size
