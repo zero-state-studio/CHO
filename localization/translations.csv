@@ -35,3 +35,6 @@ UI_DEBUG_CHARACTER,Character,Personaggio
 UI_DEBUG_TEST_HIT,Test hit,Prova urto
 UI_DEMO_TRIANGLES,{count} triangles,{count} triangoli
 UI_DEMO_OVER_BUDGET,Over budget!,Fuori budget!
+UI_DEBUG_VOLUME_MUSIC,Music volume,Volume musica
+UI_DEBUG_VOLUME_SFX,Effects volume,Volume effetti
+UI_DEBUG_VOLUME_VOICES,Voices volume,Volume versi

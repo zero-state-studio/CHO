@@ -16,6 +16,8 @@ const ROLE_LABELS: Dictionary[StringName, String] = {&"junior": "ROLE_JUNIOR", &
 @export var stats_refresh_seconds: float = 0.25
 @export var panel_width: float = 300.0
 @export var control_height: float = 36.0
+## Spazio lasciato libero sotto il pannello: oltre, il contenuto scorre.
+@export var bottom_margin: float = 100.0
 
 var _fps_label: Label
 var _draw_calls_label: Label
@@ -84,10 +86,18 @@ func _build() -> void:
 	var margin := MarginContainer.new()
 	for side: String in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 12)
-	_panel.add_child(margin)
+	# Il pannello scorre se non sta nella finestra (trascinando o con la rotella).
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.custom_minimum_size = Vector2(panel_width, _panel_max_height())
+	_panel.add_child(scroll)
+	scroll.add_child(margin)
+	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 8)
 	margin.add_child(column)
+	get_viewport().size_changed.connect(func() -> void:
+		scroll.custom_minimum_size.y = _panel_max_height())
 
 	_fps_label = _add_stat_label(column)
 	_draw_calls_label = _add_stat_label(column)
@@ -136,6 +146,16 @@ func _build() -> void:
 			DebugSettings.TIME_SCALE_MIN, DebugSettings.TIME_SCALE_MAX, 0.05, DebugSettings.time_scale)
 	time_slider.value_changed.connect(func(value: float) -> void: DebugSettings.time_scale = value)
 
+	# Volumi separati per musica, effetti e versi (bus audio).
+	for bus_name: StringName in [&"Music", &"SFX", &"Voices"]:
+		var bus_index: int = AudioServer.get_bus_index(bus_name)
+		if bus_index < 0:
+			continue
+		var volume_slider := _add_slider(column, "UI_DEBUG_VOLUME_" + String(bus_name).to_upper(), 0.0, 1.0, 0.05,
+				db_to_linear(AudioServer.get_bus_volume_db(bus_index)))
+		volume_slider.value_changed.connect(func(value: float) -> void:
+			AudioServer.set_bus_volume_db(bus_index, linear_to_db(maxf(value, 0.0001))))
+
 	var fade_toggle := CheckButton.new()
 	fade_toggle.text = "UI_DEBUG_WALL_FADE"
 	fade_toggle.button_pressed = DebugSettings.wall_fade_enabled
@@ -150,6 +170,10 @@ func _build() -> void:
 	reset_button.custom_minimum_size.y = control_height + 8.0
 	reset_button.pressed.connect(reset_requested.emit)
 	column.add_child(reset_button)
+
+
+func _panel_max_height() -> float:
+	return maxf(get_viewport().get_visible_rect().size.y - _panel.position.y - bottom_margin, 200.0)
 
 
 func _on_wobble_changed(value: float) -> void:

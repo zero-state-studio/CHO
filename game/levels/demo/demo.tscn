@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://game/levels/demo/demo.gd" id="demo"]
 [ext_resource type="PackedScene" path="res://game/characters/junior/junior.tscn" id="junior"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://game/props/physics/physics_prop.gd" id="prop"]
 [ext_resource type="Script" path="res://game/props/paper_launcher/paper_launcher.gd" id="launcher"]
 [ext_resource type="Script" path="res://game/levels/demo/showcase.gd" id="showcase"]
+[ext_resource type="Script" path="res://game/levels/demo/audio_board.gd" id="audio_board"]
 [ext_resource type="Texture2D" path="res://assets/textures/tex_floor_carpet.png" id="tex_floor"]
 [ext_resource type="PackedScene" path="res://assets/models/props/prop_desk.glb" id="m_desk"]
 [ext_resource type="PackedScene" path="res://assets/models/props/prop_swivel_chair.glb" id="m_chair"]
@@ -373,6 +374,10 @@ model_scale = 1.05
 [node name="Showcase" type="Node3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 3.5)
 script = ExtResource("showcase")
+
+[node name="AudioBoard" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3.5)
+script = ExtResource("audio_board")
 
 [node name="Targets" type="Node3D" parent="."]
 
