@@ -1,7 +1,9 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://game/levels/demo/demo.gd" id="demo"]
-[ext_resource type="PackedScene" path="res://game/characters/rubber/rubber_character.tscn" id="character"]
+[ext_resource type="PackedScene" path="res://game/characters/junior/junior.tscn" id="junior"]
+[ext_resource type="PackedScene" path="res://game/characters/manager/manager.tscn" id="manager"]
+[ext_resource type="PackedScene" path="res://game/characters/npc/colleague.tscn" id="colleague"]
 [ext_resource type="Script" path="res://game/levels/demo/level_block.gd" id="block"]
 [ext_resource type="Script" path="res://game/levels/demo/level_stairs.gd" id="stairs"]
 [ext_resource type="Script" path="res://game/levels/demo/click_target.gd" id="target"]
@@ -31,7 +33,8 @@ agent_max_slope = 30.0
 
 [node name="Demo" type="Node3D"]
 script = ExtResource("demo")
-character_scene = ExtResource("character")
+junior_scene = ExtResource("junior")
+manager_scene = ExtResource("manager")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_demo")
@@ -326,6 +329,9 @@ text = "UI_DEMO_ZONE_AUDIO"
 font_size = 96
 outline_size = 24
 modulate = Color(0.15, 0.15, 0.2, 1)
+
+[node name="Colleague" parent="." instance=ExtResource("colleague")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -12, 0.05, 5)
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -20.5, 0.05, -11)

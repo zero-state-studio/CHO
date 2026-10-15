@@ -3,14 +3,18 @@ extends Node3D
 ## fisica, asset e suoni. Collega tra loro telecamera, clic, personaggio, HUD e
 ## pannello di debug (chiamate verso il basso, segnali verso l'alto).
 
-## Scena del personaggio giocabile.
-@export var character_scene: PackedScene
+## Scene dei personaggi giocabili, scambiabili dal pannello di debug.
+@export var junior_scene: PackedScene
+@export var manager_scene: PackedScene
+## Ruolo con cui parte la scena.
+@export var starting_role: StringName = &"junior"
 ## Dimensioni delle celle della navigazione: devono coincidere con quelle della
 ## NavigationMesh della scena.
 @export var navigation_cell_size: float = 0.1
 @export var navigation_cell_height: float = 0.05
 
 var character: RubberCharacter
+var role: StringName
 
 @onready var _navigation_region: NavigationRegion3D = $NavigationRegion3D
 @onready var _spawn_point: Marker3D = $SpawnPoint
@@ -33,17 +37,11 @@ func _ready() -> void:
 	# Navmesh calcolata all'avvio: si aggiorna da sola quando cambia la scena.
 	_navigation_region.bake_navigation_mesh(false)
 
-	character = character_scene.instantiate() as RubberCharacter
-	add_child(character)
-	character.global_transform = _spawn_point.global_transform
-
-	_camera_rig.target = character
-	_camera_rig.snap_to_target()
 	_occluder_fader.camera = _camera_rig.camera
-	_occluder_fader.target = character
 	_click_router.camera = _camera_rig.camera
-	_click_router.character = character
 	_click_router.destination_chosen.connect(_click_marker.show_at)
+	_spawn_character(starting_role, _spawn_point.global_transform)
+	_camera_rig.snap_to_target()
 
 	_zoom_buttons.zoom_in_pressed.connect(_camera_rig.zoom_in)
 	_zoom_buttons.zoom_out_pressed.connect(_camera_rig.zoom_out)
@@ -52,7 +50,34 @@ func _ready() -> void:
 		_debug_panel.setup_zoom(_camera_rig.zoom_min, _camera_rig.zoom_max, _camera_rig.zoom_size)
 		_debug_panel.zoom_requested.connect(_camera_rig.set_zoom)
 		_debug_panel.reset_requested.connect(_on_reset_requested)
+		_debug_panel.character_requested.connect(_on_character_requested)
+		_debug_panel.test_hit_requested.connect(_on_test_hit_requested)
+		_debug_panel.show_role(role)
 		_camera_rig.zoom_changed.connect(_debug_panel.show_zoom)
+
+
+## Mette in scena il personaggio del ruolo indicato, al posto di quello attuale.
+func _spawn_character(new_role: StringName, spawn_transform: Transform3D) -> void:
+	var scene: PackedScene = manager_scene if new_role == &"manager" else junior_scene
+	if character:
+		character.queue_free()
+	role = new_role
+	character = scene.instantiate() as RubberCharacter
+	add_child(character)
+	character.global_transform = spawn_transform
+	_camera_rig.target = character
+	_occluder_fader.target = character
+	_click_router.character = character
+
+
+func _on_character_requested(new_role: StringName) -> void:
+	if new_role != role:
+		_spawn_character(new_role, character.global_transform)
+
+
+func _on_test_hit_requested() -> void:
+	# Urto dal davanti: il personaggio viene spinto all'indietro.
+	character.react(RubberBody.REACTION_HIT, -character.global_basis.z, 1.0)
 
 
 func _on_reset_requested() -> void:

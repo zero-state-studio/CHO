@@ -1,10 +1,13 @@
 class_name RubberCharacter
 extends CharacterBody3D
 ## Personaggio mosso col punta-e-clicca: va esattamente dove si clicca, seguendo la
-## navmesh. La gommosità (tappa 3) è solo un effetto visivo sopra questo movimento
-## e non deve mai cambiarne il risultato.
+## navmesh. Il corpo gommoso (RubberBody) è solo un effetto visivo sopra questo
+## movimento e non ne cambia mai il risultato.
 
 signal destination_reached
+
+## Aspetto del personaggio: proporzioni, colori e accessori (in data/characters/).
+@export var look: CharacterLook
 
 ## Velocità di camminata, in m/s.
 @export var walk_speed: float = 3.5
@@ -19,6 +22,11 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var _has_destination: bool = false
 
 @onready var _agent: NavigationAgent3D = $NavigationAgent3D
+@onready var _body: RubberBody = $RubberBody
+
+
+func _ready() -> void:
+	_body.build(look)
 
 
 func move_to(destination: Vector3) -> void:
@@ -34,6 +42,16 @@ func stop() -> void:
 ## Velocità orizzontale attuale: la usano gli effetti visivi (camminata, gommosità).
 func get_planar_velocity() -> Vector3:
 	return Vector3(velocity.x, 0.0, velocity.z)
+
+
+## Reazione visiva a un urto o a un crollo (vedi RubberBody.react). Il personaggio
+## continua comunque verso la sua destinazione.
+func react(kind: StringName, direction: Vector3, strength: float) -> void:
+	_body.react(kind, direction, strength)
+
+
+func get_triangle_count() -> int:
+	return _body.get_triangle_count()
 
 
 func _physics_process(delta: float) -> void:
@@ -61,6 +79,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_push_rigid_bodies()
+	_body.update_motion(get_planar_velocity(), is_on_floor(), delta)
 
 
 func _push_rigid_bodies() -> void:

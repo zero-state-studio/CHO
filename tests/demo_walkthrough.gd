@@ -40,7 +40,9 @@ func _run() -> void:
 	await physics_frame
 	await physics_frame
 	var demo: Node = current_scene
-	var character: RubberCharacter = demo.get("character")
+	# Tipo generico: questo script si compila prima degli autoload, quindi non può
+	# nominare classi che usano DebugSettings.
+	var character: Variant = demo.get("character")
 	var failures: int = 0
 
 	for waypoint: Array in WAYPOINTS:

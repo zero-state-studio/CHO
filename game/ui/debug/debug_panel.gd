@@ -6,6 +6,11 @@ extends CanvasLayer
 
 signal zoom_requested(zoom_size: float)
 signal reset_requested
+signal character_requested(role: StringName)
+signal test_hit_requested
+
+## Ruoli giocabili nel pannello: chiave di traduzione del nome per ogni ruolo.
+const ROLE_LABELS: Dictionary[StringName, String] = {&"junior": "ROLE_JUNIOR", &"manager": "ROLE_MANAGER"}
 
 ## Ogni quanto si aggiornano fps e draw call, in secondi reali.
 @export var stats_refresh_seconds: float = 0.25
@@ -15,6 +20,8 @@ signal reset_requested
 var _fps_label: Label
 var _draw_calls_label: Label
 var _zoom_slider: HSlider
+var _wobble_label: Label
+var _role_buttons: Dictionary[StringName, Button] = {}
 var _panel: PanelContainer
 var _next_refresh_msec: int = 0
 
@@ -30,6 +37,12 @@ func _ready() -> void:
 func show_zoom(zoom_size: float) -> void:
 	if _zoom_slider:
 		_zoom_slider.set_value_no_signal(zoom_size)
+
+
+## Chiamata dal livello quando cambia il personaggio giocabile.
+func show_role(role: StringName) -> void:
+	for button_role: StringName in _role_buttons:
+		_role_buttons[button_role].set_pressed_no_signal(button_role == role)
 
 
 func setup_zoom(min_size: float, max_size: float, current: float) -> void:
@@ -79,6 +92,43 @@ func _build() -> void:
 	_fps_label = _add_stat_label(column)
 	_draw_calls_label = _add_stat_label(column)
 
+	var role_title := Label.new()
+	role_title.text = "UI_DEBUG_CHARACTER"
+	column.add_child(role_title)
+	var role_row := HBoxContainer.new()
+	column.add_child(role_row)
+	var role_group := ButtonGroup.new()
+	for role: StringName in ROLE_LABELS:
+		var role_button := Button.new()
+		role_button.text = ROLE_LABELS[role]
+		role_button.toggle_mode = true
+		role_button.button_group = role_group
+		role_button.focus_mode = Control.FOCUS_NONE
+		role_button.custom_minimum_size.y = control_height + 8.0
+		role_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		role_button.pressed.connect(character_requested.emit.bind(role))
+		role_row.add_child(role_button)
+		_role_buttons[role] = role_button
+
+	_wobble_label = _add_stat_label(column)
+	var wobble_slider := HSlider.new()
+	wobble_slider.min_value = DebugSettings.WOBBLE_MIN
+	wobble_slider.max_value = DebugSettings.WOBBLE_MAX
+	wobble_slider.step = 0.05
+	wobble_slider.value = DebugSettings.wobble
+	wobble_slider.focus_mode = Control.FOCUS_NONE
+	wobble_slider.custom_minimum_size.y = control_height
+	wobble_slider.value_changed.connect(_on_wobble_changed)
+	column.add_child(wobble_slider)
+	_on_wobble_changed(DebugSettings.wobble)
+
+	var hit_button := Button.new()
+	hit_button.text = "UI_DEBUG_TEST_HIT"
+	hit_button.focus_mode = Control.FOCUS_NONE
+	hit_button.custom_minimum_size.y = control_height + 8.0
+	hit_button.pressed.connect(test_hit_requested.emit)
+	column.add_child(hit_button)
+
 	_zoom_slider = _add_slider(column, "UI_DEBUG_ZOOM", 6.0, 26.0, 0.5, 14.0)
 	_zoom_slider.value_changed.connect(zoom_requested.emit)
 
@@ -100,6 +150,11 @@ func _build() -> void:
 	reset_button.custom_minimum_size.y = control_height + 8.0
 	reset_button.pressed.connect(reset_requested.emit)
 	column.add_child(reset_button)
+
+
+func _on_wobble_changed(value: float) -> void:
+	DebugSettings.wobble = value
+	_wobble_label.text = tr("UI_DEBUG_WOBBLE").format({"value": "%.2f" % value})
 
 
 func _add_stat_label(parent: Control) -> Label:
