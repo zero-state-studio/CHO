@@ -1,0 +1,34 @@
+{
+  "prop": "desk",
+  "preview_task_id": "01a1410b-e1e3-73c0-a3a6-2da462bd57ad",
+  "refine_task_id": "01a1410c-9041-7635-8e05-f87119f88219",
+  "preview_payload": {
+    "mode": "preview",
+    "prompt": "A simple office desk with a flat wooden top, rounded corners and a small drawer unit on one side. Stylized cartoon game asset for a satirical office game, chunky rounded shapes, slightly exaggerated toy-like proportions, soft bevels, simple clean silhouette, single isolated object, no text, no logos, no brand names.",
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true,
+    "target_polycount": 1200
+  },
+  "refine_payload": {
+    "mode": "refine",
+    "preview_task_id": "01a1410b-e1e3-73c0-a3a6-2da462bd57ad",
+    "texture_prompt": "Flat saturated cartoon colors, clean simple surfaces, matte plastic look, no text, no logos, no dirt, no photographic details.",
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "consumed_credits": 15,
+  "elapsed_seconds": 311,
+  "triangles": 1180,
+  "raw_file": "desk_20261015_01a1410c.glb"
+}

@@ -143,7 +143,7 @@ def count_glb_triangles(path: Path) -> int:
 
 def append_registry(file_name: str, prompt: str, note: str) -> None:
     with REGISTRY_FILE.open("a", newline="", encoding="utf-8") as handle:
-        csv.writer(handle).writerow([file_name, "Meshy (Text to 3D)", prompt, date.today().isoformat(),
+        csv.writer(handle, lineterminator="\n").writerow([file_name, "Meshy (Text to 3D)", prompt, date.today().isoformat(),
                                      GENERATED_BY, "", note])
 
 
