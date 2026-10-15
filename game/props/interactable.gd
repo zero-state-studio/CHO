@@ -32,6 +32,7 @@ signal interaction_denied(character: RubberCharacter)
 
 var _model: Node3D
 var _model_rest_scale: Vector3 = Vector3.ONE
+var _model_rest_position: Vector3 = Vector3.ZERO
 var _active_character: RubberCharacter
 var _elapsed: float = 0.0
 var _feedback_tween: Tween
@@ -158,6 +159,9 @@ func _build_model() -> void:
 		_model.add_child(mesh_instance)
 	_model.name = "Model"
 	add_child(_model)
+	if model_scene:
+		ModelFit.ground(_model)
+	_model_rest_position = _model.position
 
 
 func _bounce(peak: float) -> void:
@@ -176,4 +180,4 @@ func _shake() -> void:
 	_model.scale = _model_rest_scale
 	_feedback_tween = create_tween()
 	for offset: float in [0.08, -0.08, 0.05, -0.05, 0.0]:
-		_feedback_tween.tween_property(_model, "position:x", offset, 0.05)
+		_feedback_tween.tween_property(_model, "position:x", _model_rest_position.x + offset, 0.05)

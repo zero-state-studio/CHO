@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://game/levels/demo/demo.gd" id="demo"]
 [ext_resource type="PackedScene" path="res://game/characters/junior/junior.tscn" id="junior"]
@@ -20,6 +20,8 @@
 [ext_resource type="Script" path="res://game/props/paper_launcher/paper_launcher.gd" id="launcher"]
 [ext_resource type="Script" path="res://game/levels/demo/showcase.gd" id="showcase"]
 [ext_resource type="Texture2D" path="res://assets/textures/tex_floor_carpet.png" id="tex_floor"]
+[ext_resource type="PackedScene" path="res://assets/models/props/prop_desk.glb" id="m_desk"]
+[ext_resource type="PackedScene" path="res://assets/models/props/prop_swivel_chair.glb" id="m_chair"]
 [ext_resource type="Texture2D" path="res://assets/textures/tex_wall_plaster.png" id="tex_wall"]
 
 [sub_resource type="Environment" id="Environment_demo"]
@@ -187,45 +189,63 @@ fadeable = true
 [node name="Movement" type="Node3D" parent="NavigationRegion3D"]
 
 [node name="DeskA1" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0.375, -13)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0.375, -13.175)
 script = ExtResource("block")
-size = Vector3(2, 0.75, 0.8)
+size = Vector3(1.9, 0.75, 1.15)
 color = Color(0.62, 0.45, 0.3, 1)
+model_scene = ExtResource("m_desk")
+model_scale = 2
+model_yaw_degrees = 0
 fadeable = true
 
 [node name="DeskA2" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.375, -13)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.375, -13.175)
 script = ExtResource("block")
-size = Vector3(2, 0.75, 0.8)
+size = Vector3(1.9, 0.75, 1.15)
 color = Color(0.62, 0.45, 0.3, 1)
+model_scene = ExtResource("m_desk")
+model_scale = 2
+model_yaw_degrees = 0
 fadeable = true
 
 [node name="DeskA3" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.375, -13)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.375, -13.175)
 script = ExtResource("block")
-size = Vector3(2, 0.75, 0.8)
+size = Vector3(1.9, 0.75, 1.15)
 color = Color(0.62, 0.45, 0.3, 1)
+model_scene = ExtResource("m_desk")
+model_scale = 2
+model_yaw_degrees = 0
 fadeable = true
 
 [node name="DeskB1" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0.375, -11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0.375, -10.825)
 script = ExtResource("block")
-size = Vector3(2, 0.75, 0.8)
+size = Vector3(1.9, 0.75, 1.15)
 color = Color(0.62, 0.45, 0.3, 1)
+model_scene = ExtResource("m_desk")
+model_scale = 2
+model_yaw_degrees = 180
 fadeable = true
 
 [node name="DeskB2" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.375, -11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.375, -10.825)
 script = ExtResource("block")
-size = Vector3(2, 0.75, 0.8)
+size = Vector3(1.9, 0.75, 1.15)
 color = Color(0.62, 0.45, 0.3, 1)
+model_scene = ExtResource("m_desk")
+model_scale = 2
+model_yaw_degrees = 180
 fadeable = true
 
 [node name="DeskB3" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.375, -11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.375, -10.825)
 script = ExtResource("block")
-size = Vector3(2, 0.75, 0.8)
+size = Vector3(1.9, 0.75, 1.15)
 color = Color(0.62, 0.45, 0.3, 1)
+model_scene = ExtResource("m_desk")
+model_scale = 2
+model_yaw_degrees = 180
 fadeable = true
 
 [node name="DoorWallLeft" type="StaticBody3D" parent="NavigationRegion3D/Movement"]
@@ -320,18 +340,24 @@ transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, 16
 script = ExtResource("prop")
 kind = 1
 color = Color(0.3, 0.45, 0.7, 1)
+model_scene = ExtResource("m_chair")
+model_scale = 1.05
 
 [node name="Chair2" type="RigidBody3D" parent="PhysicsProps"]
 transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 17.5, 0.05, -10.5)
 script = ExtResource("prop")
 kind = 1
 color = Color(0.3, 0.45, 0.7, 1)
+model_scene = ExtResource("m_chair")
+model_scale = 1.05
 
 [node name="Chair3" type="RigidBody3D" parent="PhysicsProps"]
 transform = Transform3D(-0.766044, 0, 0.642788, 0, 1, 0, -0.642788, 0, -0.766044, 14.5, 0.05, -8.5)
 script = ExtResource("prop")
 kind = 1
 color = Color(0.3, 0.45, 0.7, 1)
+model_scene = ExtResource("m_chair")
+model_scale = 1.05
 
 [node name="SwivelChair" type="RigidBody3D" parent="PhysicsProps"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0.05, -5)
@@ -341,6 +367,8 @@ color = Color(0.2, 0.2, 0.25, 1)
 friction = 0.05
 mass = 4.0
 angular_damp = 0.2
+model_scene = ExtResource("m_chair")
+model_scale = 1.05
 
 [node name="Showcase" type="Node3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 3.5)

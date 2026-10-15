@@ -48,6 +48,7 @@ func _ready() -> void:
 		var model := model_scene.instantiate() as Node3D
 		model.scale = Vector3.ONE * model_scale
 		add_child(model)
+		ModelFit.ground(model)
 	else:
 		var material := StandardMaterial3D.new()
 		material.albedo_color = color

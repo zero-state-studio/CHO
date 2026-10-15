@@ -1,10 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://game/props/desk/desk.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/models/props/prop_desk.glb" id="2_model"]
 
 [node name="Desk" type="Area3D"]
 script = ExtResource("1_script")
-footprint = Vector3(1.6, 0.75, 0.8)
+footprint = Vector3(1.9, 0.75, 1.15)
 placeholder_color = Color(0.62, 0.45, 0.3, 1)
 duration = 1.0
-approach_offset = Vector3(0, 0, 1.15)
+approach_offset = Vector3(0, 0, 1.2)
+model_scene = ExtResource("2_model")
+model_scale = 2.0
