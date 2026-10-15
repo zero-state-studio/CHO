@@ -33,3 +33,5 @@ UI_DEMO_ZONE_AUDIO,Audio,Audio
 UI_DEBUG_WOBBLE,Wobble: {value},Gommosità: {value}
 UI_DEBUG_CHARACTER,Character,Personaggio
 UI_DEBUG_TEST_HIT,Test hit,Prova urto
+UI_DEMO_TRIANGLES,{count} triangles,{count} triangoli
+UI_DEMO_OVER_BUDGET,Over budget!,Fuori budget!

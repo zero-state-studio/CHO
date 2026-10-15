@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="SphereMesh" id="SphereMesh_fixture"]
+radius = 0.4
+height = 0.8
+radial_segments = 64
+rings = 32
+
+[node name="FixtureDenseSphere" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_fixture")

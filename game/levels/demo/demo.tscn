@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://game/levels/demo/demo.gd" id="demo"]
 [ext_resource type="PackedScene" path="res://game/characters/junior/junior.tscn" id="junior"]
 [ext_resource type="PackedScene" path="res://game/characters/manager/manager.tscn" id="manager"]
-[ext_resource type="PackedScene" path="res://game/characters/npc/colleague.tscn" id="colleague"]
 [ext_resource type="Script" path="res://game/levels/demo/level_block.gd" id="block"]
 [ext_resource type="Script" path="res://game/levels/demo/level_stairs.gd" id="stairs"]
 [ext_resource type="Script" path="res://game/levels/demo/click_target.gd" id="target"]
@@ -19,6 +18,7 @@
 [ext_resource type="PackedScene" path="res://game/props/collapse_button/collapse_button.tscn" id="collapse"]
 [ext_resource type="Script" path="res://game/props/physics/physics_prop.gd" id="prop"]
 [ext_resource type="Script" path="res://game/props/paper_launcher/paper_launcher.gd" id="launcher"]
+[ext_resource type="Script" path="res://game/levels/demo/showcase.gd" id="showcase"]
 
 [sub_resource type="Environment" id="Environment_demo"]
 background_mode = 1
@@ -321,6 +321,10 @@ friction = 0.05
 mass = 4.0
 angular_damp = 0.2
 
+[node name="Showcase" type="Node3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 3.5)
+script = ExtResource("showcase")
+
 [node name="Targets" type="Node3D" parent="."]
 
 [node name="BigOpen" type="StaticBody3D" parent="Targets"]
@@ -404,9 +408,6 @@ text = "UI_DEMO_ZONE_AUDIO"
 font_size = 96
 outline_size = 24
 modulate = Color(0.15, 0.15, 0.2, 1)
-
-[node name="Colleague" parent="." instance=ExtResource("colleague")]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -12, 0.05, 5)
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -20.5, 0.05, -11)
