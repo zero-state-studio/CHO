@@ -280,7 +280,8 @@ func _build_bones() -> void:
 		_add_bone(prefix + "Foot", prefix + "LowerLeg", Vector3(0.0, -look.lower_leg_length, 0.0))
 
 	var front_y: float = torso * 0.12
-	var front_z: float = _torso_front_z(front_y) + 0.01
+	# Gli accessori pendono davanti alla pancia, che è il punto più largo del busto.
+	var front_z: float = maxf(_torso_front_z(front_y), look.torso_radius) + 0.015
 	if look.has_tie:
 		_add_bone(&"TieUpper", &"Chest", Vector3(0.0, front_y + 0.04, front_z + 0.01))
 		_add_bone(&"TieLower", &"TieUpper", Vector3(0.0, -look.tie_length * 0.5, 0.0))
@@ -395,7 +396,7 @@ func _add_accessories() -> void:
 	if look.has_badge:
 		_add_box(&"Badge", Vector3(0.008, 0.12, 0.008),
 				Transform3D(Basis.IDENTITY, Vector3(0.0, -0.06, 0.0)), look.badge_color, 0.0)
-		_add_box(&"Badge", Vector3(0.07, 0.09, 0.012),
+		_add_box(&"Badge", Vector3(0.1, 0.12, 0.012),
 				Transform3D(Basis.IDENTITY, Vector3(0.0, -0.16, 0.0)), Color(0.98, 0.98, 0.98), 0.5)
 	if look.has_backpack:
 		var back_z: float = -look.torso_radius * 0.95 - 0.06
@@ -513,7 +514,9 @@ func _build_modifiers() -> void:
 		_add_spring_chain(&"TieUpper", &"TieLower", look.tie_length * 0.5,
 				accessory_stiffness, accessory_drag, accessory_gravity)
 	if look.has_badge:
-		_add_spring_chain(&"Badge", &"Badge", 0.16, accessory_stiffness, accessory_drag, accessory_gravity)
+		# Osso singolo: la direzione "dal genitore" punterebbe in avanti, il badge pende in giù.
+		_add_spring_chain(&"Badge", &"Badge", 0.16, accessory_stiffness, accessory_drag, accessory_gravity,
+				SkeletonModifier3D.BONE_DIRECTION_MINUS_Y)
 
 	_physics = PhysicalBoneSimulator3D.new()
 	_physics.name = "PhysicalBones"
@@ -531,13 +534,15 @@ func _build_modifiers() -> void:
 
 
 func _add_spring_chain(root_bone: StringName, end_bone: StringName, end_length: float,
-		stiffness: float, drag: float, gravity: float) -> void:
+		stiffness: float, drag: float, gravity: float,
+		end_direction: SkeletonModifier3D.BoneDirection = SkeletonModifier3D.BONE_DIRECTION_FROM_PARENT) -> void:
 	var index: int = _springs.setting_count
 	_springs.setting_count = index + 1
 	_springs.set_root_bone_name(index, root_bone)
 	_springs.set_end_bone_name(index, end_bone)
 	_springs.set_extend_end_bone(index, true)
 	_springs.set_end_bone_length(index, end_length)
+	_springs.set_end_bone_direction(index, end_direction)
 	_springs.set_radius(index, 0.02)
 	_spring_chains.append({"stiffness": stiffness, "drag": drag, "gravity": gravity})
 
