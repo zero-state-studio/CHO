@@ -155,7 +155,9 @@ Si passa al vertical slice se:
 
 Prestazioni misurate:
 
-- Mac mini M4 Pro (Apple Silicon), build release esportata, 1280×720, vsync spento, con `-- --benchmark`: 390-530 fps in tutte le zone con gommosità 0, 1 e 2; frame peggiore intorno ai 10 ms; 76-123 draw call (zona interazione 123, zona fisica 115: sopra il budget di 100 per il mobile). Misurato prima dei modelli Meshy e delle texture: da rimisurare alla fine dello sprint.
+- 16 ottobre, build release finale (tutti gli asset, mipmap attive), Mac mini M4 Pro (Apple Silicon), 1280×720, vsync spento, `-- --benchmark`: 480-900 fps in tutte le zone con gommosità 0, 1 e 2; frame peggiore sotto i 9 ms. La gommosità non cambia gli fps in modo misurabile.
+- Draw call per zona: movimento 110, interazione 125, fisica 129-131, vetrina 109, audio 158. Tutte sopra il budget di 100 per il mobile (specifiche §6.2): ogni blocco del livello, cartello e tasto audio è una draw call a sé.
+- Il Mac di prova è molto più potente del "portatile vecchio" delle specifiche: va misurato su un Mac del team più datato (e su un Mac Intel, che la build universale supporta).
 
 Decisioni prese:
 
@@ -166,3 +168,29 @@ Decisioni prese:
 - 16 ottobre: la pallina di carta resta una sfera fatta in Godot, senza modello Meshy.
 - I `.glb` di Meshy hanno l'origine al centro: il gioco li appoggia a terra da solo (`ModelFit`), non si ritoccano i file.
 - Gommosità: da decidere giocando il livello demo (Sprint 2, compito del producer). Vedi il riepilogo della tappa 10 qui sotto.
+
+### Riepilogo della tappa 10 (16 ottobre)
+
+**Funziona** (verificato con i test automatici, gli screenshot e la build esportata):
+
+- le cinque zone si attraversano col solo mouse senza incastrarsi (test: 12 tappe su 12, comprese porta, rampa, pedana, gradini e corridoio da 1,2 m);
+- Junior, Manager e collega costruiti in Godot, con camminata procedurale e gommosità regolabile da 0 a 2;
+- interazioni con stampante, macchinetta del caffè e scrivania, pratica in mano, oggetti fisici, palline di carta, crollo (test: 11 controlli);
+- vetrina automatica con triangoli e "fuori budget"; zona audio automatica con segnali visivi e volumi separati;
+- build macOS universale firmata ad-hoc, con la modalità benchmark.
+
+**Non verificato o da sistemare:**
+
+- nessuno ha ancora giocato il livello a mano: il comportamento della gommosità è stato visto solo negli screenshot;
+- i versi in grammelot non sono stati ascoltati da una persona (servono tre persone che capiscano l'emozione senza guardare);
+- draw call sopra il budget mobile in tutte le zone (vedi sopra);
+- la build non è stata aperta su un altro Mac né su un Mac Intel;
+- da approvare dall'art director: le varianti di Scenario, l'ultimo lotto Meshy (macchinetta, schedario, pila di pratiche, pianta), i colori accesi della scrivania Meshy.
+
+**Da decidere sulla gommosità** (giocando il livello demo con lo slider):
+
+- 0, rigido: legge bene ma è piatto; resta solo il crollo stilizzato;
+- 1, molle e schiacciamento: braccia, testa, cravatta e badge oscillano, il corpo si allunga e si schiaccia; proposta come valore di partenza;
+- 2, ragdoll parziale negli urti e nel crollo: il più comico, da verificare se distrae o se sembra un errore;
+- domande aperte: valore di default; ragdoll in tutti gli urti o solo nel crollo; quanto spesso il lanciatore tira (ora ogni 2 s); se il personaggio debba fermarsi un attimo dopo un urto (ora non si ferma mai).
+
