@@ -152,6 +152,7 @@ Si passa al vertical slice se:
 | Musica d'attesa in loop, 60 s | ElevenLabs Music v2.5 (via Scenario) | 15 s | 30 CU | Convertita in OGG e resa ciclica con dissolvenza incrociata; lotto audio completo: 426 CU in circa 6 minuti |
 | Oggetti, lotto 1: scrivania e sedia girevole | Meshy, Smart Topology `meshy-t2.5` + texture `meshy-6` a 2K | 2-5 min ciascuno | 60 crediti (30 scartati) | Il primo tentativo è scartato: forma sbagliata e faccine nella texture, perché il prompt diceva "cartoon, toy-like". Approvati con prompt da oggetto inanimato: 1.174 e 1.206 triangoli. Origine al centro, appoggiati a terra dal gioco |
 | Oggetti, lotto 2: stampante, macchinetta del caffè, schedario, pianta, pallina di carta, pila di pratiche | Meshy, stesse impostazioni | 2-4 min ciascuno | 80 crediti (75 per 5 oggetti + 5 per la forma della pila) | Approvata solo la stampante (1.004 triangoli). Senza colori espliciti nel prompt della texture Meshy sceglie i colori a caso; i prompt corretti sono in `tools/meshy/prompts.json`. La texture della pila di pratiche è fallita 2 volte ("too complex"), senza addebito. Totale Meshy dello sprint finora: 140 crediti |
+| Oggetti, lotto finale: macchinetta del caffè, schedario e pila di pratiche rifatti, texture nuova della pianta | Meshy, `meshy-t2.5` + texture `meshy-6` | 2-3 min ciascuno (pianta 1,3 min), circa 8 min in tutto | 55 crediti (15 a oggetto, 10 per la sola texture) | 506-1.263 triangoli, tutti nel budget; la pallina di carta resta una sfera in Godot; da approvare dall'art director |
 
 Prestazioni misurate:
 
