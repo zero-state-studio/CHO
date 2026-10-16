@@ -11,6 +11,9 @@ Uso:
     # Generazione vera, solo dopo l'ok del team
     tools/.venv/bin/python tools/meshy/generate_props.py --only desk,swivel_chair --run
 
+    # Rifare solo la texture partendo da una forma (preview) già pagata
+    tools/.venv/bin/python tools/meshy/generate_props.py --only task_stack --preview-id <id> --run
+
 Prompt e impostazioni stanno in tools/meshy/prompts.json.
 """
 
@@ -59,11 +62,17 @@ def preview_payload(config: dict, prop: dict) -> dict:
     return payload
 
 
-def refine_payload(config: dict, preview_task_id: str) -> dict:
+def full_texture_prompt(config: dict, prop: dict) -> str:
+    """Colori dell'oggetto (se indicati) seguiti dalle regole comuni della texture."""
+    colors: str = prop.get("texture_prompt", "")
+    return f"{colors} {config['texture_prompt']}".strip()
+
+
+def refine_payload(config: dict, prop: dict, preview_task_id: str) -> dict:
     payload: dict = {
         "mode": "refine",
         "preview_task_id": preview_task_id,
-        "texture_prompt": config["texture_prompt"],
+        "texture_prompt": full_texture_prompt(config, prop),
     }
     payload.update(config["refine"])
     return payload
@@ -149,16 +158,22 @@ def append_registry(file_name: str, prompt: str, note: str) -> None:
 
 # --- Main --------------------------------------------------------------------
 
-def generate(config: dict, prop: dict) -> dict:
+def generate(config: dict, prop: dict, existing_preview_id: str | None = None) -> dict:
     prop_id: str = prop["id"]
     print(f"\n== {prop_id}")
     started: float = time.monotonic()
 
-    preview_id: str = create_task(preview_payload(config, prop))
-    print(f"    preview creato: {preview_id}")
-    preview_task: dict = wait_task(preview_id, "preview")
+    if existing_preview_id:
+        # Forma già pagata: si rifà solo la texture, senza ricreare la preview.
+        preview_id: str = existing_preview_id
+        preview_task: dict = wait_task(preview_id, "preview esistente")
+        preview_task["consumed_credits"] = 0
+    else:
+        preview_id = create_task(preview_payload(config, prop))
+        print(f"    preview creato: {preview_id}")
+        preview_task = wait_task(preview_id, "preview")
 
-    refine_id: str = create_task(refine_payload(config, preview_id))
+    refine_id: str = create_task(refine_payload(config, prop, preview_id))
     print(f"    refine creato: {refine_id}")
     refine_task: dict = wait_task(refine_id, "refine")
 
@@ -180,7 +195,7 @@ def generate(config: dict, prop: dict) -> dict:
         "preview_task_id": preview_id,
         "refine_task_id": refine_id,
         "preview_payload": preview_payload(config, prop),
-        "refine_payload": refine_payload(config, preview_id),
+        "refine_payload": refine_payload(config, prop, preview_id),
         "consumed_credits": credits,
         "elapsed_seconds": round(elapsed),
         "triangles": triangles,
@@ -200,6 +215,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--only", help="id degli oggetti separati da virgola (default: tutti)")
     parser.add_argument("--run", action="store_true", help="genera davvero e spende crediti")
+    parser.add_argument("--preview-id", help="riusa questa preview già riuscita (un solo oggetto): solo refine")
     args = parser.parse_args()
 
     config: dict = load_config()
@@ -211,13 +227,15 @@ def main() -> int:
             sys.exit(f"Oggetti sconosciuti: {', '.join(unknown)}")
         props = [prop for prop in props if prop["id"] in wanted]
 
-    estimate: int = credits_per_prop(config) * len(props)
+    if args.preview_id and len(props) != 1:
+        sys.exit("--preview-id vale per un solo oggetto: usalo con --only <id>.")
+    estimate: int = int(config["credits"]["refine"]) if args.preview_id else credits_per_prop(config) * len(props)
     print(f"Oggetti: {len(props)}  |  stima: {estimate} crediti "
           f"({config['credits']['preview']} preview + {config['credits']['refine']} refine a oggetto)")
     for prop in props:
         print(f"\n[{prop['id']}] target_polycount={prop['target_polycount']}")
         print(f"  prompt: {full_prompt(config, prop)}")
-    print(f"\ntexture_prompt: {config['texture_prompt']}")
+        print(f"  texture_prompt: {full_texture_prompt(config, prop)}")
     print(f"preview: {json.dumps(config['preview'])}")
     print(f"refine:  {json.dumps(config['refine'])}")
 
@@ -229,7 +247,7 @@ def main() -> int:
     if balance < estimate:
         sys.exit("Crediti insufficienti per questo lotto.")
 
-    results: list[dict] = [generate(config, prop) for prop in props]
+    results: list[dict] = [generate(config, prop, args.preview_id) for prop in props]
     total_credits: int = sum(result["consumed_credits"] for result in results)
     print(f"\nTotale: {total_credits} crediti; saldo ora {get_balance()}.")
     return 0

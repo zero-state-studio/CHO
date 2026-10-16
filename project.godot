@@ -34,6 +34,7 @@ scene={
 "gltf/embedded_image_handling": 1
 }
 texture={
+"mipmaps/generate": true,
 "process/size_limit": 512
 }
 

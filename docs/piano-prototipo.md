@@ -143,8 +143,18 @@ Si passa al vertical slice se:
 
 | Asset | Strumento | Tempo | Crediti | Note |
 |---|---|---|---|---|
-| | | | | |
+| Personaggi Junior, Manager e collega | Godot, costruiti da codice | — | 0 | 2.300-2.500 triangoli ciascuno; una draw call più il contorno |
+| Texture ripetibili: moquette e intonaco, 512 px (2 varianti ciascuna) | Scenario, PATINA Material | circa 3 min di generazione | 14 CU (7 a texture) | Ha prodotto anche mappe PBR non richieste, senza costi in più; servono le mipmap all'import |
+| Icone con sfondo trasparente: Energia, Stress, caffè, pratica (2 varianti ciascuna) | Scenario, GPT Image 2.5 Flare | 15-30 s ciascuna | 24 CU (6 a icona) | Tutte usabili al primo colpo |
+| Concept di Junior e Manager (2 varianti ciascuno) | Scenario, FLUX.2 Klein 9b | circa 40 s ciascuno | 4 CU (2 a concept) | Lotto Scenario completo: 42 CU, circa 10 minuti con revisione e download |
+| Versi in grammelot di Junior e Manager (6, una versione ciascuno) | ElevenLabs v4 (via Scenario), voci preimpostate Liam e Brian | 6-15 s ciascuno | 96 CU (16 a verso) | Voice Design non disponibile su Scenario; grammelot da verificare a orecchio |
+| Effetti sonori (10, una versione ciascuno) | ElevenLabs Sound Effects 2 (via Scenario) | 4-8 s ciascuno | 300 CU (30 a effetto, fissi anche per 1 s) | Sonilo V1.1 avrebbe fatto gli stessi 10 effetti per 13 CU |
+| Musica d'attesa in loop, 60 s | ElevenLabs Music v2.5 (via Scenario) | 15 s | 30 CU | Convertita in OGG e resa ciclica con dissolvenza incrociata; lotto audio completo: 426 CU in circa 6 minuti |
+| Oggetti, lotto 1: scrivania e sedia girevole | Meshy, Smart Topology `meshy-t2.5` + texture `meshy-6` a 2K | 2-5 min ciascuno | 60 crediti (30 scartati) | Il primo tentativo è scartato: forma sbagliata e faccine nella texture, perché il prompt diceva "cartoon, toy-like". Approvati con prompt da oggetto inanimato: 1.174 e 1.206 triangoli. Origine al centro, appoggiati a terra dal gioco |
+| Oggetti, lotto 2: stampante, macchinetta del caffè, schedario, pianta, pallina di carta, pila di pratiche | Meshy, stesse impostazioni | 2-4 min ciascuno | 80 crediti (75 per 5 oggetti + 5 per la forma della pila) | Approvata solo la stampante (1.004 triangoli). Senza colori espliciti nel prompt della texture Meshy sceglie i colori a caso; i prompt corretti sono in `tools/meshy/prompts.json`. La texture della pila di pratiche è fallita 2 volte ("too complex"), senza addebito. Totale Meshy dello sprint finora: 140 crediti |
 
 Prestazioni misurate:
+
+- Mac mini M4 Pro (Apple Silicon), build release esportata, 1280×720, vsync spento, con `-- --benchmark`: 390-530 fps in tutte le zone con gommosità 0, 1 e 2; frame peggiore intorno ai 10 ms; 76-123 draw call (zona interazione 123, zona fisica 115: sopra il budget di 100 per il mobile). Misurato prima dei modelli Meshy e delle texture: da rimisurare alla fine dello sprint.
 
 Decisioni prese:

@@ -1,0 +1,34 @@
+{
+  "prop": "printer",
+  "preview_task_id": "01a1411c-3f95-7721-85be-7ae43ed6e1e2",
+  "refine_task_id": "01a1411d-6b28-72eb-b380-4a8aa2c655dc",
+  "preview_payload": {
+    "mode": "preview",
+    "prompt": "A bulky office laser printer: a wide rounded box with a paper tray sticking out at the front, an output tray on top with one sheet of paper, and a small control panel with two round buttons. Stylized cartoon office prop for a video game, inanimate object, chunky rounded shapes, slightly exaggerated proportions, soft bevels, simple clean silhouette, single isolated object, no face, no eyes, no mouth, no characters, no text, no logos, no brand names.",
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true,
+    "target_polycount": 1000
+  },
+  "refine_payload": {
+    "mode": "refine",
+    "preview_task_id": "01a1411c-3f95-7721-85be-7ae43ed6e1e2",
+    "texture_prompt": "Flat saturated colors, solid uniform colors, no gradients, clean simple surfaces, matte plastic look, plain materials, no faces, no eyes, no characters, no stickers, no text, no logos, no dirt, no photographic details.",
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "consumed_credits": 15,
+  "elapsed_seconds": 217,
+  "triangles": 1004,
+  "raw_file": "printer_20261015_01a1411d.glb"
+}

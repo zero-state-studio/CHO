@@ -1,0 +1,34 @@
+{
+  "prop": "paper_ball",
+  "preview_task_id": "01a1412a-634f-7651-abd2-51e18cf9489c",
+  "refine_task_id": "01a1412b-3cc3-7599-abb5-477afd97f599",
+  "preview_payload": {
+    "mode": "preview",
+    "prompt": "A crumpled ball of white paper, roughly spherical, with a few chunky folds. Stylized cartoon office prop for a video game, inanimate object, chunky rounded shapes, slightly exaggerated proportions, soft bevels, simple clean silhouette, single isolated object, no face, no eyes, no mouth, no characters, no text, no logos, no brand names.",
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true,
+    "target_polycount": 200
+  },
+  "refine_payload": {
+    "mode": "refine",
+    "preview_task_id": "01a1412a-634f-7651-abd2-51e18cf9489c",
+    "texture_prompt": "Flat saturated colors, solid uniform colors, no gradients, clean simple surfaces, matte plastic look, plain materials, no faces, no eyes, no characters, no stickers, no text, no logos, no dirt, no photographic details.",
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "consumed_credits": 15,
+  "elapsed_seconds": 227,
+  "triangles": 185,
+  "raw_file": "paper_ball_20261015_01a1412b.glb"
+}
