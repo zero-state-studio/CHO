@@ -27,10 +27,19 @@ extends StaticBody3D
 		_rebuild()
 
 var _parts: Array[Node3D] = []
+var _steps: Array[MeshInstance3D] = []
 
 
 func _ready() -> void:
 	_rebuild()
+	if not Engine.is_editor_hint():
+		add_to_group(MeshBatcher.BATCHABLE_GROUP)
+
+
+## Chiamata dal MeshBatcher: i gradini si disegnano insieme ai blocchi uguali.
+func batch_meshes(batcher: MeshBatcher) -> void:
+	for step: MeshInstance3D in _steps:
+		batcher.add(step)
 
 
 func _rebuild() -> void:
@@ -39,18 +48,19 @@ func _rebuild() -> void:
 	for part: Node3D in _parts:
 		part.queue_free()
 	_parts.clear()
+	_steps.clear()
 
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
+	# Stesso cubo e stesso materiale dei LevelBlock, così finiscono nello stesso gruppo.
+	var material: StandardMaterial3D = LevelBlock.shared_material(color, null, 1.0)
 	for step_index: int in step_count:
 		var height: float = step_height * (step_index + 1)
-		var box_mesh := BoxMesh.new()
-		box_mesh.size = Vector3(width, height, step_depth)
 		var step := MeshInstance3D.new()
-		step.mesh = box_mesh
+		step.mesh = LevelBlock.unit_box()
+		step.scale = Vector3(width, height, step_depth)
 		step.material_override = material
 		step.position = Vector3(0.0, height * 0.5, -step_depth * step_index)
 		_add_part(step)
+		_steps.append(step)
 
 	# Rampa: dal bordo anteriore del primo gradino (a terra) al bordo posteriore
 	# dell'ultimo (in cima).

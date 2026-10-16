@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://game/levels/demo/demo.gd" id="demo"]
 [ext_resource type="PackedScene" path="res://game/characters/junior/junior.tscn" id="junior"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://game/levels/demo/click_target.gd" id="target"]
 [ext_resource type="Script" path="res://game/core/camera/iso_camera.gd" id="camera"]
 [ext_resource type="Script" path="res://game/core/camera/occluder_fader.gd" id="fader"]
+[ext_resource type="Script" path="res://game/core/rendering/mesh_batcher.gd" id="batcher"]
 [ext_resource type="Script" path="res://game/core/input/click_router.gd" id="router"]
 [ext_resource type="Script" path="res://game/core/input/click_marker.gd" id="marker"]
 [ext_resource type="PackedScene" path="res://game/ui/hud/zoom_buttons.tscn" id="zoom"]
@@ -494,6 +495,9 @@ current = true
 
 [node name="OccluderFader" type="Node" parent="."]
 script = ExtResource("fader")
+
+[node name="MeshBatcher" type="Node3D" parent="."]
+script = ExtResource("batcher")
 
 [node name="ClickRouter" type="Node" parent="."]
 script = ExtResource("router")

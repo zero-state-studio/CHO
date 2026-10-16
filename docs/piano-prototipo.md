@@ -156,7 +156,8 @@ Si passa al vertical slice se:
 Prestazioni misurate:
 
 - 16 ottobre, build release finale (tutti gli asset, mipmap attive), Mac mini M4 Pro (Apple Silicon), 1280×720, vsync spento, `-- --benchmark`: 480-900 fps in tutte le zone con gommosità 0, 1 e 2; frame peggiore sotto i 9 ms. La gommosità non cambia gli fps in modo misurabile.
-- Draw call per zona: movimento 110, interazione 125, fisica 129-131, vetrina 109, audio 158. Tutte sopra il budget di 100 per il mobile (specifiche §6.2): ogni blocco del livello, cartello e tasto audio è una draw call a sé.
+- Draw call per zona, prima dell'ottimizzazione: movimento 110, interazione 125, fisica 129-131, vetrina 109, audio 158. Tutte sopra il budget di 100 per il mobile (specifiche §6.2): ogni blocco del livello e ogni tasto audio era una draw call a sé, e nel renderer Compatibility ogni oggetto si ridisegna anche per la luce con le ombre e per le divisioni dell'ombra (circa metà delle draw call).
+- 16 ottobre, dopo l'ottimizzazione (build release, stessa misura): movimento 81, interazione 83, fisica 85-86, vetrina 81, audio 89-90. Tutte sotto il budget di 100, aspetto e gameplay invariati (screenshot prima e dopo identici, test passati). Pareti, pedane, gradini e tasti audio uguali si disegnano insieme in una MultiMesh (`MeshBatcher`, in `game/core/rendering/`); una parete che diventa trasparente, o un tasto che suona, esce dal gruppo finché serve. I modelli `.glb` restano separati: nelle ombre ognuno sceglie il suo LOD in base alla distanza, e raggruppati cambierebbero le ombre. Restano a sé anche le etichette (circa 2 draw call l'una, testo e contorno): nella zona audio sono 34.
 - Il Mac di prova è molto più potente del "portatile vecchio" delle specifiche: va misurato su un Mac del team più datato (e su un Mac Intel, che la build universale supporta).
 
 Decisioni prese:
@@ -183,7 +184,7 @@ Decisioni prese:
 
 - nessuno ha ancora giocato il livello a mano: il comportamento della gommosità è stato visto solo negli screenshot;
 - i versi in grammelot non sono stati ascoltati da una persona (servono tre persone che capiscano l'emozione senza guardare);
-- draw call sopra il budget mobile in tutte le zone (vedi sopra);
+- ~~draw call sopra il budget mobile in tutte le zone~~: sistemato il 16 ottobre, ora 81-90 (vedi sopra); il margine è piccolo, quindi i nuovi oggetti ripetuti vanno raggruppati;
 - la build non è stata aperta su un altro Mac né su un Mac Intel;
 - da approvare dall'art director: le varianti di Scenario, l'ultimo lotto Meshy (macchinetta, schedario, pila di pratiche, pianta), i colori accesi della scrivania Meshy.
 
