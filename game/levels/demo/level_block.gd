@@ -4,8 +4,13 @@ extends StaticBody3D
 ## Parallelepipedo statico del livello (pavimento, pareti, scrivanie segnaposto).
 ## Crea da solo mesh e collisione, così si dimensiona dall'Ispettore. Se `fadeable`
 ## è attivo diventa trasparente quando copre il personaggio (vedi OccluderFader).
+## Blocchi e modelli uguali si disegnano insieme (vedi MeshBatcher): per questo la
+## scatola è un cubo unitario scalato e il materiale è condiviso tra blocchi uguali.
 
 const FADE_GROUP: StringName = &"fade_occluder"
+
+static var _unit_box: BoxMesh
+static var _shared_materials: Dictionary[String, StandardMaterial3D] = {}
 
 @export var size: Vector3 = Vector3(1.0, 1.0, 1.0):
 	set(value):
@@ -49,18 +54,57 @@ const FADE_GROUP: StringName = &"fade_occluder"
 @export var fade_duration: float = 0.15
 
 var _material: StandardMaterial3D
+## Copia del materiale usata solo durante la dissolvenza, per non toccare quello
+## condiviso.
+var _fade_material: StandardMaterial3D
 var _mesh_instance: MeshInstance3D
 var _collision_shape: CollisionShape3D
 var _fade_tween: Tween
 var _is_faded: bool = false
 var _model: Node3D
 var _model_meshes: Array[GeometryInstance3D] = []
+var _batcher: MeshBatcher
+
+
+## Materiale condiviso da tutti i blocchi con lo stesso aspetto.
+static func shared_material(albedo: Color, albedo_texture: Texture2D, meters: float) -> StandardMaterial3D:
+	var key: String = "%s/%d/%f" % [albedo.to_html(), albedo_texture.get_instance_id() if albedo_texture else 0,
+			meters if albedo_texture else 0.0]
+	var material: StandardMaterial3D = _shared_materials.get(key)
+	if material == null:
+		material = StandardMaterial3D.new()
+		material.albedo_color = albedo
+		material.albedo_texture = albedo_texture
+		material.uv1_triplanar = albedo_texture != null
+		material.uv1_world_triplanar = albedo_texture != null
+		material.uv1_scale = Vector3.ONE / maxf(meters, 0.01)
+		_shared_materials[key] = material
+	return material
+
+
+## Cubo di lato 1, condiviso: ogni blocco lo scala alle sue dimensioni.
+static func unit_box() -> BoxMesh:
+	if _unit_box == null:
+		_unit_box = BoxMesh.new()
+	return _unit_box
 
 
 func _ready() -> void:
 	_rebuild()
-	if fadeable and not Engine.is_editor_hint():
-		add_to_group(FADE_GROUP)
+	if not Engine.is_editor_hint():
+		add_to_group(MeshBatcher.BATCHABLE_GROUP)
+		if fadeable:
+			add_to_group(FADE_GROUP)
+
+
+## Chiamata dal MeshBatcher: registra la scatola. I modelli importati restano
+## separati: hanno i loro LOD, che ogni istanza sceglie in base alla distanza, e
+## in una MultiMesh le ombre cambierebbero.
+func batch_meshes(batcher: MeshBatcher) -> void:
+	if _model:
+		return
+	_batcher = batcher
+	batcher.add(_mesh_instance)
 
 
 func set_faded(faded: bool) -> void:
@@ -76,13 +120,24 @@ func set_faded(faded: bool) -> void:
 		for mesh: GeometryInstance3D in _model_meshes:
 			_fade_tween.parallel().tween_property(mesh, "transparency", 1.0 - target_alpha, fade_duration)
 		return
-	# La trasparenza costa: la si attiva solo mentre il blocco non è opaco.
+	# La trasparenza costa: la si attiva solo mentre il blocco non è opaco, con una
+	# copia del materiale condiviso. Intanto il blocco si disegna da solo.
+	if _fade_material == null:
+		_fade_material = _material.duplicate() as StandardMaterial3D
 	if faded:
-		_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_fade_tween.tween_property(_material, "albedo_color:a", target_alpha, fade_duration)
+		_fade_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		_mesh_instance.material_override = _fade_material
+		if _batcher:
+			_batcher.detach(_mesh_instance)
+	_fade_tween.tween_property(_fade_material, "albedo_color:a", target_alpha, fade_duration)
 	if not faded:
-		_fade_tween.tween_callback(func() -> void:
-			_material.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED)
+		_fade_tween.tween_callback(_on_unfaded)
+
+
+func _on_unfaded() -> void:
+	_mesh_instance.material_override = _material
+	if _batcher:
+		_batcher.attach(_mesh_instance)
 
 
 func _rebuild() -> void:
@@ -93,15 +148,10 @@ func _rebuild() -> void:
 		add_child(_mesh_instance)
 		_collision_shape = CollisionShape3D.new()
 		add_child(_collision_shape)
-		_material = StandardMaterial3D.new()
-	var box_mesh := BoxMesh.new()
-	box_mesh.size = size
-	_mesh_instance.mesh = box_mesh
-	_material.albedo_color = color
-	_material.albedo_texture = texture
-	_material.uv1_triplanar = texture != null
-	_material.uv1_world_triplanar = texture != null
-	_material.uv1_scale = Vector3.ONE / maxf(texture_meters, 0.01)
+	_mesh_instance.mesh = unit_box()
+	_mesh_instance.scale = size
+	_material = shared_material(color, texture, texture_meters)
+	_fade_material = null
 	_mesh_instance.material_override = _material
 	var box_shape := BoxShape3D.new()
 	box_shape.size = size

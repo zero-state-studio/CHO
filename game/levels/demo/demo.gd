@@ -20,6 +20,7 @@ var role: StringName
 @onready var _spawn_point: Marker3D = $SpawnPoint
 @onready var _camera_rig: IsoCamera = $IsoCamera
 @onready var _occluder_fader: OccluderFader = $OccluderFader
+@onready var _mesh_batcher: MeshBatcher = $MeshBatcher
 @onready var _click_router: ClickRouter = $ClickRouter
 @onready var _click_marker: ClickMarker = $ClickMarker
 @onready var _zoom_buttons: ZoomButtons = $Hud/ZoomButtons
@@ -36,6 +37,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	# Navmesh calcolata all'avvio: si aggiorna da sola quando cambia la scena.
 	_navigation_region.bake_navigation_mesh(false)
+	# Pareti, pedane e tasti audio uguali si disegnano insieme: meno draw call.
+	_mesh_batcher.collect(self)
 
 	_occluder_fader.camera = _camera_rig.camera
 	_click_router.camera = _camera_rig.camera
