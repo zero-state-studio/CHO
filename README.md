@@ -18,6 +18,12 @@ git clone <indirizzo-del-repository>
 
 Poi in Godot: **Importa** → selezionate `project.godot`. Al primo avvio Godot importa tutte le risorse: può volerci qualche minuto.
 
+## Il livello demo
+
+Aprite il progetto e premete F5: parte il livello demo (`game/levels/demo/demo.tscn`). Si gioca col solo mouse: clic sul pavimento per camminare, clic su un oggetto per usarlo, rotella o pulsanti +/− per lo zoom. Il pannello "Debug" in alto a sinistra cambia personaggio, gommosità, velocità del tempo e volumi.
+
+Per misurare le prestazioni sul vostro Mac, esportate la build ed eseguitela con `-- --benchmark` (i comandi sono in `CLAUDE.md`): stampa gli fps di ogni zona e li salva in un file. Al primo avvio una build non notarizzata va aperta con clic destro → Apri.
+
 ## Dove trovare cosa
 
 - `docs/specifiche-del-gioco.md` — cos'è il gioco e cosa abbiamo deciso

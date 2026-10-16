@@ -55,6 +55,15 @@ godot --headless --path . --check-only -s res://percorso/script.gd
 # Avviare una scena
 godot --path . res://game/levels/demo/demo.tscn
 
+# Test automatici del livello demo (senza interfaccia): attraversamento, interazioni, vetrina
+godot --headless --path . --fixed-fps 60 -s res://tests/demo_walkthrough.gd
+godot --headless --path . --fixed-fps 60 -s res://tests/demo_interactions.gd
+godot --headless --path . --fixed-fps 60 -s res://tests/demo_showcase.gd
+
+# Esportare la build macOS (universale, firma ad-hoc) e misurare gli fps
+godot --headless --path . --export-release "macOS" builds/macos-release/OpenSpace.app
+"builds/macos-release/OpenSpace.app/Contents/MacOS/Open Space" -- --benchmark
+
 # Creare l'ambiente virtuale per gli script della pipeline (una volta sola)
 python3 -m venv tools/.venv && tools/.venv/bin/pip install -r tools/requirements.txt
 
@@ -64,6 +73,8 @@ tools/.venv/bin/python tools/check_keys.py
 # Eseguire uno script della pipeline
 tools/.venv/bin/python tools/meshy/nome_script.py
 ```
+
+Gli script in `tests/` si compilano prima degli autoload: non possono nominare classi che usano `DebugSettings` (usano variabili `Variant`).
 
 `godot` è il nome dell'eseguibile nel PATH; se è diverso, usa `GODOT_BIN` da `.env` (su macOS di solito `/Applications/Godot.app/Contents/MacOS/Godot`). Blender per ora non si usa: non cercarlo, non installarlo e non scrivere script per Blender. Dopo ogni modifica agli script esegui almeno l'import headless e correggi errori e warning prima di dire che hai finito.
 

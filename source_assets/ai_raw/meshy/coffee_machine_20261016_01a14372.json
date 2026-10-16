@@ -1,0 +1,34 @@
+{
+  "prop": "coffee_machine",
+  "preview_task_id": "01a14372-14b3-7554-b4a8-9f068e27d1b6",
+  "refine_task_id": "01a14372-c717-72d1-ac6d-ed7e94de4f54",
+  "preview_payload": {
+    "mode": "preview",
+    "prompt": "A chunky countertop espresso coffee machine: a rounded rectangular body with a flat top, a short metal spout on the front above a small drip tray holding one white cup. Plain smooth front with no buttons, no dials and no dots. Stylized cartoon office prop for a video game, inanimate object, chunky rounded shapes, slightly exaggerated proportions, soft bevels, simple clean silhouette, single isolated object, no face, no eyes, no mouth, no characters, no text, no logos, no brand names.",
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true,
+    "target_polycount": 1000
+  },
+  "refine_payload": {
+    "mode": "refine",
+    "preview_task_id": "01a14372-14b3-7554-b4a8-9f068e27d1b6",
+    "texture_prompt": "Glossy red body, silver spout, white cup, black drip tray. Solid uniform colors, no gradients, clean simple surfaces, matte plastic look, plain materials, no faces, no eyes, no characters, no stickers, no text, no logos, no dirt, no photographic details.",
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "consumed_credits": 15,
+  "elapsed_seconds": 123,
+  "triangles": 995,
+  "raw_file": "coffee_machine_20261016_01a14372.glb"
+}

@@ -52,8 +52,12 @@ func populate() -> void:
 		_add_item(path, false)
 
 
-## Conta i triangoli di tutte le mesh sotto node.
+## Conta i triangoli di tutte le mesh visibili sotto node (salta per esempio la
+## pratica nascosta in mano ai personaggi).
 static func count_triangles(node: Node) -> int:
+	var node_3d := node as Node3D
+	if node_3d and not node_3d.visible:
+		return 0
 	var total: int = 0
 	var mesh_instance := node as MeshInstance3D
 	if mesh_instance and mesh_instance.mesh:

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://tyrbcbpifawe"
-path="res://.godot/imported/prop_paper_ball.glb-38a0b003af281c5661e20c46da611aa6.scn"
+uid="uid://boqbyyaphshns"
+path="res://.godot/imported/prop_task_stack.glb-7d12731634c5675fd43dd09bef970583.scn"
 
 [deps]
 
-source_file="res://assets/models/props/prop_paper_ball.glb"
-dest_files=["res://.godot/imported/prop_paper_ball.glb-38a0b003af281c5661e20c46da611aa6.scn"]
+source_file="res://assets/models/props/prop_task_stack.glb"
+dest_files=["res://.godot/imported/prop_task_stack.glb-7d12731634c5675fd43dd09bef970583.scn"]
 
 [params]
 

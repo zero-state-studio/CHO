@@ -158,3 +158,11 @@ Prestazioni misurate:
 - Mac mini M4 Pro (Apple Silicon), build release esportata, 1280×720, vsync spento, con `-- --benchmark`: 390-530 fps in tutte le zone con gommosità 0, 1 e 2; frame peggiore intorno ai 10 ms; 76-123 draw call (zona interazione 123, zona fisica 115: sopra il budget di 100 per il mobile). Misurato prima dei modelli Meshy e delle texture: da rimisurare alla fine dello sprint.
 
 Decisioni prese:
+
+- 15 ottobre: lo Sprint 1 gira solo su macOS (editor e build esportata universale, firma ad-hoc); mobile e Blender rinviati (specifiche §7.3 🔄).
+- 15 ottobre: i personaggi si costruiscono in Godot da codice, con un solo scheletro e una sola mesh skinnata per personaggio (2.300-2.500 triangoli, una draw call più il contorno).
+- 15 ottobre: Scenario ed ElevenLabs si usano dai server MCP con il login dell'utente, salvando prompt e parametri in `tools/<strumento>/prompts.json` (non ci sono chiavi API per questi due servizi).
+- 15 ottobre: audio con l'opzione "tutto ElevenLabs" (426 CU), invece degli effetti Sonilo (139 CU in tutto).
+- 16 ottobre: la pallina di carta resta una sfera fatta in Godot, senza modello Meshy.
+- I `.glb` di Meshy hanno l'origine al centro: il gioco li appoggia a terra da solo (`ModelFit`), non si ritoccano i file.
+- Gommosità: da decidere giocando il livello demo (Sprint 2, compito del producer). Vedi il riepilogo della tappa 10 qui sotto.

@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://g1ryco8ywsoo"
-path="res://.godot/imported/prop_paper_ball_0.jpg-8088d1fb6ad979e3446111251da8c18e.ctex"
+uid="uid://dlt4n38a5c6aa"
+path="res://.godot/imported/prop_task_stack_0.jpg-e546ae7bf2c22b2d07a50d13b911e35b.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "a0337dc02cbcd0fe7bbc6e70c9e881c8"
+"md5": "0d9624e7bdde669bf91f8d88694df96a"
 }
 
 [deps]
 
-source_file="res://assets/models/props/prop_paper_ball_0.jpg"
-dest_files=["res://.godot/imported/prop_paper_ball_0.jpg-8088d1fb6ad979e3446111251da8c18e.ctex"]
+source_file="res://assets/models/props/prop_task_stack_0.jpg"
+dest_files=["res://.godot/imported/prop_task_stack_0.jpg-e546ae7bf2c22b2d07a50d13b911e35b.ctex"]
 
 [params]
 

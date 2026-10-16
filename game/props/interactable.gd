@@ -29,6 +29,9 @@ signal interaction_denied(character: RubberCharacter)
 ## L'oggetto blocca il passaggio (ed entra nella navmesh come ostacolo). Gli oggetti
 ## bassi su cui si sale, come il pulsante "crollo", non sono solidi.
 @export var solid: bool = true
+## Mobiletto sotto il modello, per gli oggetti da banco (0 = nessuno), in metri.
+@export var pedestal_height: float = 0.0
+@export var pedestal_color: Color = Color(0.55, 0.5, 0.45)
 
 var _model: Node3D
 var _model_rest_scale: Vector3 = Vector3.ONE
@@ -141,6 +144,20 @@ func _build_click_area() -> void:
 	add_child(shape)
 
 
+## Mobiletto semplice sotto un oggetto da banco: largo e profondo quanto l'ingombro.
+func _build_pedestal() -> void:
+	var pedestal := MeshInstance3D.new()
+	pedestal.name = "Pedestal"
+	var box := BoxMesh.new()
+	box.size = Vector3(footprint.x, pedestal_height, footprint.z)
+	pedestal.mesh = box
+	pedestal.position.y = pedestal_height * 0.5
+	var material := StandardMaterial3D.new()
+	material.albedo_color = pedestal_color
+	pedestal.material_override = material
+	add_child(pedestal)
+
+
 func _build_model() -> void:
 	if model_scene:
 		_model = model_scene.instantiate() as Node3D
@@ -160,7 +177,9 @@ func _build_model() -> void:
 	_model.name = "Model"
 	add_child(_model)
 	if model_scene:
-		ModelFit.ground(_model)
+		ModelFit.ground(_model, pedestal_height)
+	if pedestal_height > 0.0:
+		_build_pedestal()
 	_model_rest_position = _model.position
 
 
