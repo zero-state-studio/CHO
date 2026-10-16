@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3]
+
+[ext_resource type="Shader" path="res://assets/shaders/shd_toon.gdshader" id="1_toon"]
+[ext_resource type="Material" path="res://assets/materials/mat_character_outline.tres" id="2_outline"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("2_outline")
+shader = ExtResource("1_toon")
+shader_parameter/bands = 3
+shader_parameter/shadow_floor = 0.25
+shader_parameter/gloss_size = 0.93
+shader_parameter/gloss_strength = 0.7

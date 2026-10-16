@@ -1,0 +1,76 @@
+{
+  "_note": "Prompt e impostazioni degli oggetti del livello demo (Sprint 1). Si generano con tools/meshy/generate_props.py.",
+  "style_prompt": "Stylized cartoon office prop for a video game, inanimate object, chunky rounded shapes, slightly exaggerated proportions, soft bevels, simple clean silhouette, single isolated object, no face, no eyes, no mouth, no characters, no text, no logos, no brand names.",
+  "texture_prompt": "Solid uniform colors, no gradients, clean simple surfaces, matte plastic look, plain materials, no faces, no eyes, no characters, no stickers, no text, no logos, no dirt, no photographic details.",
+  "preview": {
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "refine": {
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "credits": {
+    "preview": 5,
+    "refine": 10
+  },
+  "triangle_budget": 1500,
+  "props": [
+    {
+      "id": "desk",
+      "prompt": "A rectangular office desk: a wide flat tabletop at waist height on four straight legs, with a small three-drawer pedestal under the right side of the tabletop, open space for the legs underneath.",
+      "target_polycount": 1200
+    },
+    {
+      "id": "swivel_chair",
+      "prompt": "An office swivel chair: a central gas-lift column on a five-star base with five small caster wheels clearly visible, a rounded padded seat, a tall rounded backrest and two armrests.",
+      "target_polycount": 1200
+    },
+    {
+      "id": "printer",
+      "prompt": "A bulky office laser printer: a wide rounded box with a paper tray sticking out at the front, an output tray on top with one sheet of paper, and a small control panel with two round buttons.",
+      "target_polycount": 1000
+    },
+    {
+      "id": "coffee_machine",
+      "prompt": "A chunky countertop espresso coffee machine: a rounded rectangular body with a flat top, a short metal spout on the front above a small drip tray holding one white cup. Plain smooth front with no buttons, no dials and no dots.",
+      "target_polycount": 1000,
+      "texture_prompt": "Glossy red body, silver spout, white cup, black drip tray."
+    },
+    {
+      "id": "filing_cabinet",
+      "prompt": "A metal office filing cabinet: a tall narrow rectangular box made of three identical stacked drawers, each drawer front with one horizontal bar handle. No round shapes, no windows, no doors.",
+      "target_polycount": 600,
+      "texture_prompt": "Light grey painted metal, darker grey handles."
+    },
+    {
+      "id": "plant",
+      "prompt": "A potted office plant: a simple round terracotta pot with five big rounded leaves on short stems.",
+      "target_polycount": 1200,
+      "texture_prompt": "Bright green leaves, orange terracotta pot, dark brown soil."
+    },
+    {
+      "id": "task_stack",
+      "prompt": "A neat stack of white paper sheets inside an open beige cardboard folder: a simple flat rectangular block about as thick as a book, with slightly uneven edges.",
+      "target_polycount": 500,
+      "texture_prompt": "White paper edges, beige cardboard folder, one small red paper clip."
+    },
+    {
+      "id": "paper_ball",
+      "prompt": "A crumpled ball of white paper, roughly spherical, with a few chunky folds.",
+      "target_polycount": 200,
+      "texture_prompt": "Plain white paper with light grey shading in the creases."
+    }
+  ]
+}

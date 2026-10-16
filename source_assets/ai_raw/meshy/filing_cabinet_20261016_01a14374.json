@@ -1,0 +1,34 @@
+{
+  "prop": "filing_cabinet",
+  "preview_task_id": "01a14373-f4ab-716e-9396-168519bf6da2",
+  "refine_task_id": "01a14374-8118-7703-a64c-849505939dc2",
+  "preview_payload": {
+    "mode": "preview",
+    "prompt": "A metal office filing cabinet: a tall narrow rectangular box made of three identical stacked drawers, each drawer front with one horizontal bar handle. No round shapes, no windows, no doors. Stylized cartoon office prop for a video game, inanimate object, chunky rounded shapes, slightly exaggerated proportions, soft bevels, simple clean silhouette, single isolated object, no face, no eyes, no mouth, no characters, no text, no logos, no brand names.",
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true,
+    "target_polycount": 600
+  },
+  "refine_payload": {
+    "mode": "refine",
+    "preview_task_id": "01a14373-f4ab-716e-9396-168519bf6da2",
+    "texture_prompt": "Light grey painted metal, darker grey handles. Solid uniform colors, no gradients, clean simple surfaces, matte plastic look, plain materials, no faces, no eyes, no characters, no stickers, no text, no logos, no dirt, no photographic details.",
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "consumed_credits": 15,
+  "elapsed_seconds": 113,
+  "triangles": 554,
+  "raw_file": "filing_cabinet_20261016_01a14374.glb"
+}

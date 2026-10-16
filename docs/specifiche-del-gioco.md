@@ -1,8 +1,8 @@
 # Open Space — Specifiche del gioco
 
-*Titolo provvisorio, da decidere. Versione 0.3 del 15 ottobre 2026: aggiornata con le risposte su mobile, data d'uscita e gameplay, e con la versione di Godot.*
+*Titolo provvisorio, da decidere. Versione 0.4 del 15 ottobre 2026: aggiunti personaggi gommosi, strumenti per gli asset e livello demo.*
 
-Altri documenti in questa cartella: `piano-prototipo.md` (i primi due sprint), `guida-di-stile.md` (da compilare), `decisioni-del-gioco.md` (il file originale delle decisioni).
+Altri documenti in questa cartella: `piano-prototipo.md` (i primi tre sprint), `registro-asset.csv` (gli asset generati con l'IA), `guida-di-stile.md` (da compilare), `decisioni-del-gioco.md` (il file originale delle decisioni).
 
 Questo documento parte dal file **Le decisioni del gioco** e lo aggiorna con il brief del 15 ottobre: gioco d'ufficio in cui, a seconda del livello, sei il Manager tossico o il Junior; mobile e PC; 3D cartoon; missioni meme; personaggi che fanno solo versi. Dove nessuno dei due diceva niente ho fatto delle proposte, segnate come tali: sono un punto di partenza da discutere, non decisioni.
 
@@ -34,7 +34,7 @@ Questo documento parte dal file **Le decisioni del gioco** e lo aggiorna con il 
 
 ## 2. Il gioco in breve
 
-**Pitch** ✅. Un gioco d'azione a livelli, in 3D cartoon e visuale isometrica, ambientato in un ufficio: ogni livello è una giornata di lavoro a tempo, nel caos dell'open space. In ogni livello sei uno dei due: il **Junior**, che deve fare il bravo e guadagnarsi il contratto, o il **Manager tossico**, che deve far sembrare suo il lavoro degli altri senza farsi beccare. Le missioni sono i meme della vita d'ufficio. Nessuno parla: tutti si esprimono a versi.
+**Pitch** ✅. Un gioco d'azione a livelli, in 3D cartoon e visuale isometrica, ambientato in un ufficio: ogni livello è una giornata di lavoro a tempo, nel caos dell'open space. In ogni livello sei uno dei due: il **Junior**, che deve fare il bravo e guadagnarsi il contratto, o il **Manager tossico**, che deve far sembrare suo il lavoro degli altri senza farsi beccare. Le missioni sono i meme della vita d'ufficio. I personaggi sono pupazzi gommosi e snodati, e nessuno parla: tutti si esprimono a versi.
 
 **Pilastri** 💡
 
@@ -220,6 +220,7 @@ Visuale isometrica e punta-e-clicca: funziona allo stesso modo col mouse e col d
 | Motore | Godot ✅ — 💡 4.7.2, l'ultima stabile al 15 ottobre 2026, congelata fino all'uscita salvo bug bloccanti (versione standard, non .NET) |
 | Linguaggio | GDScript ✅ — si esporta senza problemi su tutte e cinque le piattaforme |
 | Renderer | 💡 *Compatibility*: il più leggero, gira sui portatili vecchi e sulla maggior parte dei telefoni; il toon shading si fa comunque con shader propri |
+| Fisica | 💡 Jolt, più stabile con le articolazioni dei personaggi gommosi |
 | Salvataggio | Automatico ai checkpoint ✅ (pausa pranzo e fine livello). PC: Steam Cloud ✅. Mobile: salvataggio locale 💡, cloud più avanti |
 | Funzioni Steam | Achievement, Steam Cloud e classifiche tramite GodotSteam ✅ |
 | Funzioni mobile | ❓ Game Center e Google Play Games (con plugin della community), oppure niente al lancio |
@@ -251,7 +252,8 @@ Indicativo, da verificare con il prototipo.
 
 ### 7.1 Stile
 
-- 3D cartoon ✅: teste grandi, mani grandi, proporzioni esagerate, toon shading con contorno, colori saturi.
+- 3D cartoon ✅ con **personaggi gommosi e snodati in stile Human Fall Flat** ✅ (riferimento per la sensazione: il personaggio di quel gioco non si copia). Corpi morbidi e arrotondati come pupazzi di gomma, arti a segmenti che ciondolano e reagiscono agli urti, mani a muffola, viso minimale. Toon shading con contorno, colori saturi, materiale opaco da gomma.
+- 💡 **Gommosi ma precisi:** il personaggio va dove tocchi; la gommosità è un effetto sopra il movimento (oscillazioni, schiacciamento e allungamento, ragdoll parziale per urti e cadute) e non deve mai far fallire un'azione. Quanto spingere sulla fisica si decide giocando il livello demo.
 - Leggibilità prima di tutto: su un telefono un personaggio è alto un centimetro, e va riconosciuto dalla sola silhouette.
 - Junior 💡: camicia troppo grande, badge al collo, zainetto. Manager 💡: abito lucido, cravatta enorme, abbronzatura, sorriso fisso. Il colore aiuta ma non basta: i ruoli si distinguono anche dalla forma (accessibilità).
 - Visuale isometrica ✅: 💡 telecamera ortogonale inclinata di circa 30-35° e ruotata di 45°.
@@ -267,15 +269,17 @@ Indicativo, da verificare con il prototipo.
 | Colleghi | Archetipi: quello del pesce al microonde, quella del "rispondi a tutti", lo stagista eterno, il tecnico informatico, l'entusiasta del team building |
 | La stampante | Il primo boss |
 
-### 7.3 Uso dell'IA ✅ (per quasi tutto, con ritocchi)
+### 7.3 Uso dell'IA ✅ 🔄 (per quasi tutto, con ritocchi)
 
 Il rischio principale è la coerenza: asset generati con strumenti diversi, da persone diverse, sembrano presi da giochi diversi. 💡 Come contenerlo:
 
 1. **Guida di stile** prima di generare qualsiasi asset: 10-15 immagini di riferimento, palette, regole su proporzioni e contorni.
 2. **Un art director** nel team che approva ogni asset prima che entri nel gioco.
-3. **Pipeline dei modelli 3D:** concept (Scenario) → modello (Meshy) → pulizia in Blender (riduzione dei poligoni, UV, texture sull'atlante) → rig e animazioni → import in Godot. I modelli generati escono spesso con troppi poligoni e topologia disordinata: la pulizia non è facoltativa, soprattutto per mobile e portatili vecchi.
+3. **Chi fa cosa** 🔄 *(15 ottobre 2026: Blender rinviato)*: i personaggi si costruiscono **in Godot, da codice**, con mesh primitive (capsule e sfere) agganciate a un unico scheletro umanoide creato da codice; proporzioni, colori e accessori sono parametri, così sono coerenti e pronti per la fisica. Oggetti e arredi si generano con Meshy tenendo bassi i poligoni con le sue opzioni (poligoni di destinazione bassi, remesh, texture alla risoluzione minima); le texture si limitano a 512 px dalle impostazioni d'importazione di Godot. Niente pulizia a mano: un oggetto che sfora il budget (§6.2) si rigenera. Concept, texture e icone con Scenario; versi, effetti e musica con ElevenLabs. Blender (script dei personaggi, pulizia dei modelli, atlanti delle texture) è rinviato a dopo il prototipo.
 4. **Licenze:** verificate che ogni strumento, con il piano che pagate, permetta l'uso commerciale.
 5. **Dichiarazione su Steam:** i contenuti generati con IA vanno dichiarati nel questionario dei contenuti, e la dichiarazione compare sulla pagina del gioco. Per App Store e Google Play verificate le regole aggiornate.
+6. **Registro degli asset** (`registro-asset.csv`): per ogni asset generato, strumento, prompt e data. Rende facile la dichiarazione su Steam e il controllo delle licenze.
+7. **Qualità per fase:** media nel prototipo (modalità di generazione leggere, texture da 512 px), rifinitura dal vertical slice in poi.
 
 ### 7.4 Interfaccia a tema ✅
 
@@ -283,7 +287,7 @@ Post-it, cartelline, timbri, finestre di email e notifiche del calendario. 💡 
 
 ### 7.5 Animazioni
 
-Per ogni personaggio giocabile: fermo, camminata, corsa, trasporto, lancio (Manager), interazione, stress, crollo, esultanza, sconfitta, più 5-6 reazioni da abbinare ai versi. Per i colleghi un set ridotto.
+Per ogni personaggio giocabile: fermo, camminata, corsa, trasporto, lancio (Manager), interazione, stress, crollo, esultanza, sconfitta, più 5-6 reazioni da abbinare ai versi. Per i colleghi un set ridotto. 💡 Con i personaggi gommosi molte animazioni possono essere procedurali (camminata dondolante, oscillazioni, crollo in ragdoll): meno lavoro a mano, da verificare nel livello demo.
 
 ---
 
@@ -409,14 +413,14 @@ Stima grezza, da ricalibrare dopo il prototipo.
 
 | Fase | Sprint | Si chiude quando |
 |---|---|---|
-| Prototipo | 2 | Un livello Junior e uno Manager in grafica grigia girano su PC e su un telefono, e sono divertenti |
+| Prototipo | 3 | Il livello demo, poi un livello Junior e uno Manager in grafica media, girano su PC e su un telefono e sono divertenti |
 | Vertical slice | 3 | Un livello per ruolo con grafica, audio e interfaccia finali: diventa il riferimento di stile |
 | Produzione | 8-12 | Tutti i livelli giocabili dall'inizio alla fine |
 | Rifinitura | 3-4 | Bug, bilanciamento, lingue, accessibilità, prestazioni sul portatile vecchio |
 | Lancio PC | 1-2 | Il gioco è su Steam |
 | Mobile | 3-4 | Il gioco è su App Store e Google Play, partendo dalla versione PC già uscita e stabile |
 
-Il PC esce dopo circa 17-23 sprint (8-11 mesi), il mobile dopo 20-27 sprint in tutto (10-13 mesi).
+Il PC esce dopo circa 18-24 sprint (8-11 mesi), il mobile dopo 21-28 sprint in tutto (10-13 mesi).
 
 ### 13.4 Data d'uscita — quando è pronto ✅ 🔄
 
@@ -534,3 +538,4 @@ Risolte il 15 ottobre: il mobile esce dopo il PC ✅, il gioco esce quando è pr
 7. **Prezzo sul mobile:** a pagamento o gratis con sblocco? Prima del porting.
 8. **Progressi tra PC e telefono:** servono? Prima del porting.
 9. **Achievement e classifiche su mobile:** al lancio mobile o dopo?
+10. **Gommosità:** quanta fisica nei movimenti dei personaggi? Si decide giocando il livello demo.

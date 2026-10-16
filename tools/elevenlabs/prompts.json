@@ -1,0 +1,206 @@
+{
+  "_info": "Audio del prototipo, generato dal server MCP di Scenario (modelli ElevenLabs e, per gli effetti nell'opzione B, Sonilo) con il login dell'utente. Per rifare una generazione: stesso model_id e stessi parameters con model_run, nel workspace indicato. Costi in Creative Units (CU), stimati con dry_run il 2026-10-15. Stato: generato il 2026-10-15 con l'opzione A (tutto ElevenLabs), approvata dall'utente in chat: 426 CU in tutto.",
+  "workspace": {
+    "team_id": "team_boscukTE1AfcStGzcGfPCBSq",
+    "project_id": "proj_e3G6TyKNVH3TRmGEBhrB8Aym"
+  },
+  "post_processing": "Versi: WAV 44,1 kHz direttamente dal modello. Effetti: WAV (Sonilo) oppure MP3 convertito in WAV con soundfile (ElevenLabs). Musica: MP3 convertito in OGG Vorbis con soundfile, con una dissolvenza incrociata tra fine e inizio per il loop.",
+  "batches": [
+    {
+      "batch": "sprint1-versi",
+      "model_id": "model_elevenlabs-tts-v4",
+      "model_name": "ElevenLabs v4 (text to speech)",
+      "estimated_cu_per_item": 16,
+      "note": "Grammelot: sillabe inventate, nessuna parola vera in italiano o inglese; i tag tra parentesi quadre guidano l'emozione e non vengono letti. Voice Design non è disponibile su Scenario: ogni personaggio usa sempre la stessa voce preimpostata, così resta riconoscibile.",
+      "common_parameters": {
+        "stability": 0.3,
+        "outputFormat": "wav_44100",
+        "seed": 1015
+      },
+      "items": [
+        {
+          "output": "assets/audio/voices/vox_junior_greeting.wav",
+          "publicVoice": "Liam",
+          "text": "[cheerful] Ehooo! Mimmì-tabà, lurulù!",
+          "job_id": "job_eAzwM1gCihk6YGaWoLKPXfVA",
+          "asset": "asset_KjRpUo2mQrWcbaGZ5efoFz4S",
+          "cu_spent": 16
+        },
+        {
+          "output": "assets/audio/voices/vox_junior_annoyed.wav",
+          "publicVoice": "Liam",
+          "text": "[annoyed] Mmmh-nnnh! Brrr... tsk, gnagnagnà!",
+          "job_id": "job_Qz39ANm7ifXkjenBL16wYCBR",
+          "asset": "asset_8hP6WwM3x8NWc47Nx32HFEVk",
+          "cu_spent": 16
+        },
+        {
+          "output": "assets/audio/voices/vox_junior_cheer.wav",
+          "publicVoice": "Liam",
+          "text": "[excited] Iuuuh! Dabadì-dabadà, ipiiii!",
+          "job_id": "job_yiK1ruy2GBJ7ySMwhDm2LMvh",
+          "asset": "asset_qEuqBiCcXJqdcF9Xn31Lx89C",
+          "cu_spent": 16
+        },
+        {
+          "output": "assets/audio/voices/vox_manager_greeting.wav",
+          "publicVoice": "Brian",
+          "text": "[smug] Ohohòh! Bwoh-bwoh, dorunbàh!",
+          "job_id": "job_JHREkXNi1wRDXJmStYvVioV7",
+          "asset": "asset_KrLtF8Hf8W38sgMbQTxCmQhL",
+          "cu_spent": 16
+        },
+        {
+          "output": "assets/audio/voices/vox_manager_annoyed.wav",
+          "publicVoice": "Brian",
+          "text": "[irritated] Hmpf! Grrrmmh... brabrabrà, tsss!",
+          "job_id": "job_1NKKjf3Et7RNqxqPqduoiVxZ",
+          "asset": "asset_bbGrfJVrU4LND6brRoSL6N3G",
+          "cu_spent": 16
+        },
+        {
+          "output": "assets/audio/voices/vox_manager_cheer.wav",
+          "publicVoice": "Brian",
+          "text": "[laughing] Muahahà! Bo-bo-bomm, ghirindàh!",
+          "job_id": "job_sHB8ZLECa3UZPCykCATdcyoT",
+          "asset": "asset_zXgzDYvNAcEzTRcoQo4ngzMA",
+          "cu_spent": 16
+        }
+      ]
+    },
+    {
+      "batch": "sprint1-effetti",
+      "options": {
+        "A_elevenlabs": {
+          "model_id": "model_elevenlabs-sound-effects-v2",
+          "model_name": "ElevenLabs Sound Effects 2",
+          "estimated_cu_per_item": 30,
+          "common_parameters": {
+            "promptInfluence": 0.5,
+            "outputFormat": "mp3_44100_128"
+          },
+          "duration_field": "durationSeconds"
+        },
+        "B_sonilo": {
+          "model_id": "model_sonilo-v1-1-text-to-sound-effects",
+          "model_name": "Sonilo V1.1 Text to SFX",
+          "estimated_cu_per_item": "1 fino a 2 s, 2 per 3-4 s",
+          "common_parameters": {
+            "audioFormat": "wav"
+          },
+          "duration_field": "duration"
+        }
+      },
+      "items": [
+        {
+          "output": "assets/audio/sfx/sfx_footsteps_rubber.wav",
+          "duration": 2,
+          "text": "Comical rubbery squeaky footsteps of a cartoon toy character walking on office carpet, four soft bouncy steps",
+          "job_id": "job_XiVV5NhfQK2bpLkmLgYXrRp9",
+          "asset": "asset_V9tuvGvWZnV7s5GbZpVdeR7d",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_click.wav",
+          "duration": 1,
+          "text": "Short soft cartoon UI click, plastic button pop, clean, no reverb",
+          "job_id": "job_EnWirAnZ8cvX85ys3kcRbCdd",
+          "asset": "asset_ULZEKLoDebmrbughdr8qJFfZ",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_printer.wav",
+          "duration": 4,
+          "text": "Old office laser printer printing one page: whirring motor, mechanical clunks and a paper sheet sliding out, slightly comical",
+          "job_id": "job_Ej63ys559d31SWVzTDdjLzTC",
+          "asset": "asset_c7jccg1FwKv1YEFRWkN6Lk9y",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_coffee.wav",
+          "duration": 4,
+          "text": "Office espresso machine brewing a coffee: short grinding, hiss of steam and coffee pouring into a cup",
+          "job_id": "job_ddAXquGsj35KgvETpqubYV7X",
+          "asset": "asset_goFcSMsn4RZR2JkxKyH1Y5TW",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_rubber_bump.wav",
+          "duration": 1,
+          "text": "Cartoon rubber toy bumping into furniture: springy boing with a squeak and a soft thud",
+          "job_id": "job_L9y1pGi7HDpo5o9QtDJ1yVo9",
+          "asset": "asset_25sK1c1gT3Jkxg7ETV2iGK5V",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_paper_ball.wav",
+          "duration": 1,
+          "text": "Crumpled paper ball whooshing through the air and bouncing off a person with a light papery thwap",
+          "job_id": "job_GruMauZ97QogfVAuuYy5kzFC",
+          "asset": "asset_o32kEgxAceEfRDkhyXJ9Dews",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_microwave_ding.wav",
+          "duration": 2,
+          "text": "Office microwave finishing: a single bright ding bell",
+          "job_id": "job_5vLB5mhLSPQV5d5gu4H3Cgkn",
+          "asset": "asset_sYkF3HFoL8fPkbrNtff2t9hC",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_email_notification.wav",
+          "duration": 1,
+          "text": "Friendly email notification chime, two short rising tones, cartoonish, not any real brand sound",
+          "job_id": "job_ePmTnkRYcKT8uPTzztWwAqbC",
+          "asset": "asset_yosw5jgBfrkDbbQNozw8Wsjw",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_bell_1800.wav",
+          "duration": 3,
+          "text": "End of workday bell at six in the evening: cheerful school-style bell ringing, cartoon office",
+          "job_id": "job_2TWMLfPgwbbG3cARjMVo4NRj",
+          "asset": "asset_rESbHPArB8RVkWHVZ8VQnDdu",
+          "cu_spent": 30
+        },
+        {
+          "output": "assets/audio/sfx/sfx_collapse.wav",
+          "duration": 2,
+          "text": "Cartoon character collapsing on a desk from stress: deflating rubber squeak, descending slide whistle and a soft flop",
+          "job_id": "job_LDboWt3mTjSNnCVaTXN2M6Dr",
+          "asset": "asset_PdfUCPNT7zmQxu7biykgqN3m",
+          "cu_spent": 30
+        }
+      ]
+    },
+    {
+      "batch": "sprint1-musica",
+      "model_id": "model_elevenlabs-music-v2-5",
+      "model_name": "ElevenLabs Music v2.5",
+      "estimated_cu_per_item": 30,
+      "items": [
+        {
+          "output": "assets/audio/music/mus_hold_loop.ogg",
+          "parameters": {
+            "prompt": "Elevator waiting music for a satirical office video game: lounge bossa nova with soft electric piano, muted jazz guitar, light brushed drums and a gentle walking bass, cheerful but slightly bland corporate mood, medium tempo around 100 BPM, steady and even from start to end so it can loop, no intro and no ending",
+            "durationSeconds": 60,
+            "forceInstrumental": true,
+            "outputFormat": "mp3_48000_192",
+            "seed": 1015
+          },
+          "job_id": "job_xdBVRk8iEvGbEobGoBnWh6y6",
+          "asset": "asset_m2Br5yCWgvDxgRWn61B6XQhg",
+          "cu_spent": 30
+        }
+      ]
+    }
+  ],
+  "chosen_option": "A_elevenlabs",
+  "run": {
+    "date": "2026-10-15",
+    "total_cu": 426,
+    "wall_clock_minutes": 6,
+    "note": "Una sola versione per suono. Generazione in 3 ondate (limite di 7 lavori in parallelo del piano Pro). Post-produzione con tools/elevenlabs/convert_audio.py. I versi in grammelot vanno controllati a orecchio: nessuna parola vera."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "prop": "swivel_chair",
+  "preview_task_id": "01a14110-a06f-75d2-b2d5-28856391999c",
+  "refine_task_id": "01a14111-5084-70bb-9933-7ff09f2b326f",
+  "preview_payload": {
+    "mode": "preview",
+    "prompt": "An office swivel chair with a five-star wheeled base, a rounded padded seat, a rounded backrest and two armrests. Stylized cartoon game asset for a satirical office game, chunky rounded shapes, slightly exaggerated toy-like proportions, soft bevels, simple clean silhouette, single isolated object, no text, no logos, no brand names.",
+    "model_type": "smart-topology",
+    "ai_model": "meshy-t2.5",
+    "topology": "triangle",
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true,
+    "target_polycount": 1200
+  },
+  "refine_payload": {
+    "mode": "refine",
+    "preview_task_id": "01a14110-a06f-75d2-b2d5-28856391999c",
+    "texture_prompt": "Flat saturated cartoon colors, clean simple surfaces, matte plastic look, no text, no logos, no dirt, no photographic details.",
+    "ai_model": "meshy-6",
+    "enable_pbr": false,
+    "texture_resolution": "2k",
+    "remove_lighting": true,
+    "target_formats": [
+      "glb"
+    ],
+    "moderation": true
+  },
+  "consumed_credits": 15,
+  "elapsed_seconds": 153,
+  "triangles": 1220,
+  "raw_file": "swivel_chair_20261015_01a14111.glb"
+}

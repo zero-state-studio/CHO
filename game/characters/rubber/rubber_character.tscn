@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://game/characters/rubber/rubber_character.gd" id="1_script"]
+[ext_resource type="Script" path="res://game/characters/rubber/rubber_body.gd" id="2_body"]
+[ext_resource type="Material" path="res://assets/materials/mat_character_toon.tres" id="3_toon"]
+[ext_resource type="Resource" path="res://data/characters/colleague.tres" id="4_look"]
+[ext_resource type="Script" path="res://game/ui/hud/progress_bar_3d.gd" id="5_progress"]
+[ext_resource type="PackedScene" path="res://assets/models/props/prop_task_stack.glb" id="6_task"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.35
+height = 1.6
+
+[node name="RubberCharacter" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 5
+floor_snap_length = 0.3
+script = ExtResource("1_script")
+look = ExtResource("4_look")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="RubberBody" type="Node3D" parent="."]
+script = ExtResource("2_body")
+material = ExtResource("3_toon")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.3
+target_desired_distance = 0.2
+path_height_offset = 0.0
+height = 1.6
+radius = 0.35
+
+[node name="ProgressBar3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, 0)
+script = ExtResource("5_progress")
+
+[node name="CarriedTask" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0.45)
+visible = false
+
+[node name="TaskStack" parent="CarriedTask" instance=ExtResource("6_task")]
+transform = Transform3D(0.37, 0, 0, 0, 0.37, 0, 0, 0, 0.37, 0, 0, 0)

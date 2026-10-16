@@ -4,7 +4,7 @@ Istruzioni per Claude su questo progetto. Valgono per ogni sessione.
 
 ## Il progetto in breve
 
-*Open Space* (nome in codice) è un gioco d'azione a livelli in 3D cartoon, con visuale isometrica, ambientato in un ufficio. Ogni livello è una giornata di lavoro a tempo (9:00 → 18:00 in circa 5 minuti reali). A seconda del livello si gioca il **Junior**, che deve guadagnarsi il contratto, o il **Manager tossico**, che deve prendersi il merito senza farsi beccare dalle Risorse Umane. Le missioni sono meme della vita d'ufficio. Nessuno parla: i personaggi fanno solo versi.
+*Open Space* (nome in codice) è un gioco d'azione a livelli in 3D cartoon, con visuale isometrica, ambientato in un ufficio. Ogni livello è una giornata di lavoro a tempo (9:00 → 18:00 in circa 5 minuti reali). A seconda del livello si gioca il **Junior**, che deve guadagnarsi il contratto, o il **Manager tossico**, che deve prendersi il merito senza farsi beccare dalle Risorse Umane. Le missioni sono meme della vita d'ufficio. I personaggi sono pupazzi 3D gommosi e snodati, in stile Human Fall Flat, e non parlano: fanno solo versi.
 
 Lo sviluppano 8 colleghi nel tempo libero. Esce prima su PC (Steam: Windows, macOS, Linux, Steam Deck), poi su iOS e Android.
 
@@ -15,6 +15,7 @@ Lo sviluppano 8 colleghi nel tempo libero. Esce prima su PC (Steam: Windows, mac
 | `docs/specifiche-del-gioco.md` | La fonte di verità su design e decisioni |
 | `docs/piano-prototipo.md` | Cosa si fa negli sprint in corso |
 | `docs/guida-di-stile.md` | Regole visive per asset e interfaccia |
+| `docs/registro-asset.csv` | Ogni asset generato con l'IA: strumento, prompt, data, approvazione |
 | `docs/decisioni-del-gioco.md` | Il file originale delle decisioni: storico, non modificarlo |
 
 Nelle specifiche: ✅ deciso, 🔄 deciso ma cambiato, 💡 proposta, ❓ aperto.
@@ -26,13 +27,16 @@ Nelle specifiche: ✅ deciso, 🔄 deciso ma cambiato, 💡 proposta, ❓ aperto
 
 ## Stato attuale
 
-**Fase: prototipo (Sprint 1-2).** Grafica grigia fatta di primitive e CSG, nessun asset finale, nessuna integrazione Steam, nessun menu completo. Vedi `docs/piano-prototipo.md`.
+**Fase: prototipo (Sprint 1-3).** Primo obiettivo: il **livello demo** (`game/levels/demo/`), una scena di prova per movimenti, personaggi gommosi, asset e suoni, da fare prima dei livelli veri. Grafica di qualità media, nessuna integrazione Steam, nessun menu completo. Vedi `docs/piano-prototipo.md`.
+
+**Per ora il prototipo gira solo su macOS**, nell'editor e in una build esportata: niente preset di esportazione, test o funzioni per Windows, Linux, Android o iOS. **Mobile e Blender sono rinviati.** Le regole sui controlli (un solo puntatore, niente azioni solo da tastiera o col tasto destro) restano valide, così non si rifanno i controlli quando arriva il mobile.
 
 ## Stack tecnico
 
 - **Godot 4.7.2**, versione standard (non .NET). È congelata: non usare funzioni di versioni successive e non proporre aggiornamenti senza una decisione del team.
 - **Solo GDScript**, con tipizzazione statica. Niente C#.
 - **Renderer Compatibility** su tutte le piattaforme. Prima di usare un effetto grafico, verifica nella documentazione che sia supportato da questo renderer.
+- **Fisica: Jolt** (impostata in `project.godot`), più stabile con le articolazioni dei personaggi.
 - Viewport base 1280×720, stretch `canvas_items`, aspect `expand`: l'interfaccia deve adattarsi da 4:3 a 20:9.
 - Plugin di terze parti in `addons/`. Previsto più avanti: GodotSteam (non ancora installato).
 
@@ -49,16 +53,36 @@ godot --headless --path . --import
 godot --headless --path . --check-only -s res://percorso/script.gd
 
 # Avviare una scena
-godot --path . res://game/levels/prototype/nome_scena.tscn
+godot --path . res://game/levels/demo/demo.tscn
+
+# Test automatici del livello demo (senza interfaccia): attraversamento, interazioni, vetrina
+godot --headless --path . --fixed-fps 60 -s res://tests/demo_walkthrough.gd
+godot --headless --path . --fixed-fps 60 -s res://tests/demo_interactions.gd
+godot --headless --path . --fixed-fps 60 -s res://tests/demo_showcase.gd
+
+# Esportare la build macOS (universale, firma ad-hoc) e misurare gli fps
+godot --headless --path . --export-release "macOS" builds/macos-release/OpenSpace.app
+"builds/macos-release/OpenSpace.app/Contents/MacOS/Open Space" -- --benchmark
+
+# Creare l'ambiente virtuale per gli script della pipeline (una volta sola)
+python3 -m venv tools/.venv && tools/.venv/bin/pip install -r tools/requirements.txt
+
+# Controllare che le chiavi delle API funzionino (chiamate gratuite)
+tools/.venv/bin/python tools/check_keys.py
+
+# Eseguire uno script della pipeline
+tools/.venv/bin/python tools/meshy/nome_script.py
 ```
 
-`godot` è il nome dell'eseguibile nel PATH: adattalo se sul computer ha un altro nome. Dopo ogni modifica agli script esegui almeno l'import headless e correggi errori e warning prima di dire che hai finito.
+Gli script in `tests/` si compilano prima degli autoload: non possono nominare classi che usano `DebugSettings` (usano variabili `Variant`).
+
+`godot` è il nome dell'eseguibile nel PATH; se è diverso, usa `GODOT_BIN` da `.env` (su macOS di solito `/Applications/Godot.app/Contents/MacOS/Godot`). Blender per ora non si usa: non cercarlo, non installarlo e non scrivere script per Blender. Dopo ogni modifica agli script esegui almeno l'import headless e correggi errori e warning prima di dire che hai finito.
 
 ## Struttura delle cartelle
 
 ```
 open-space/
-├── CLAUDE.md, README.md, project.godot, icon.svg
+├── CLAUDE.md, README.md, project.godot, icon.svg, .env.example
 ├── addons/            Plugin di terze parti (GodotSteam, ecc.)
 ├── assets/            Solo asset puliti e approvati, divisi per tipo
 │   ├── audio/         music/, sfx/, voices/
@@ -70,13 +94,14 @@ open-space/
 ├── game/              Scene e script, divisi per funzione
 │   ├── characters/    junior/, manager/, npc/
 │   ├── core/          Orologio della giornata, obiettivi, punteggio, checkpoint
-│   ├── levels/        prototype/, poi una cartella per capitolo
+│   ├── levels/        demo/ (livello di prova), prototype/, poi una cartella per capitolo
 │   ├── platform/      Steam, Game Center, Google Play Games dietro un'unica interfaccia
 │   ├── props/         Oggetti interattivi (stampante, macchinetta del caffè, ...)
 │   └── ui/            hud/, menus/
 ├── localization/      translations.csv (chiavi, en, it)
 ├── source_assets/     File sorgente e generazioni IA grezze (ignorata da Godot)
-└── tests/             Test automatici (strumento da decidere)
+├── tests/             Test automatici (strumento da decidere)
+└── tools/             Script della pipeline: blender/, meshy/, scenario/, elevenlabs/ (ignorata da Godot)
 ```
 
 Scene e script stanno insieme, nella cartella della funzione a cui servono: `game/characters/junior/junior.tscn` + `junior.gd`.
@@ -92,6 +117,36 @@ Scene e script stanno insieme, nella cartella della funzione a cui servono: `gam
 - Godot crea file `.uid` accanto a script e risorse: si committano e si spostano insieme al file. Sposta e rinomina i file dall'editor quando possibile, così i riferimenti restano validi.
 - Non modificare a mano i file `.import`.
 
+## Stile dei personaggi: gommosi e snodati
+
+I personaggi sono **pupazzi 3D gommosi e snodati, in stile Human Fall Flat**. È un riferimento per la sensazione: il personaggio di quel gioco non si copia.
+
+- **Forme:** corpo morbido a fagiolo, testa tonda e liscia, arti fatti di segmenti arrotondati con le articolazioni ben visibili, mani a muffola senza dita separate. Viso minimale: due occhi, al massimo una bocca semplice.
+- **Materiale:** colori pieni, aspetto opaco da gomma o plastilina, toon shading con contorno.
+- **Il ruolo si riconosce da vestiti, accessori e silhouette**, non dal viso: cravatta enorme e giacca lucida per il Manager, camicia troppo grande e badge per il Junior.
+- **Un solo scheletro per tutti**, umanoide e semplice, con i nomi delle ossa del profilo umanoide di Godot (`SkeletonProfileHumanoid`): animazioni, fisica e accessori si condividono tra i personaggi.
+- **Costruzione: in Godot, da codice.** Mesh primitive di Godot (capsule e sfere per corpo, testa, segmenti degli arti, mani a muffola) agganciate a uno `Skeleton3D` creato da codice. Un solo corpo e un solo scheletro per tutti: proporzioni, colori e accessori (cravatta, badge, giacca...) sono parametri, in `@export` o in una risorsa in `data/`. Così i personaggi restano coerenti, leggeri e già pronti per la fisica. Budget: 1.500-3.000 triangoli. Le scene dei personaggi stanno in `game/characters/`.
+- **Gommosi ma precisi.** Il personaggio va esattamente dove il giocatore tocca (`CharacterBody3D` + `NavigationAgent3D`). La gommosità è un effetto sopra il movimento: oscillazioni (`SpringBoneSimulator3D`), schiacciamento e allungamento, camminata dondolante procedurale, e ragdoll parziale (`PhysicalBoneSimulator3D`, dosato con `influence`) solo per le reazioni: urti, cadute, palline di carta, crollo da stress. La goffaggine fa ridere, ma non deve mai far fallire un'azione. Quanto spingere sulla fisica si decide giocando il livello demo, con lo slider della gommosità.
+
+## Strumenti per grafica e audio
+
+| Strumento | Per cosa | Script |
+|---|---|---|
+| Meshy (API) | Oggetti e arredi: scrivanie, sedie, stampante, macchinetta del caffè... | `tools/meshy/` |
+| Scenario (server MCP, con il login dell'utente) | Concept, texture, icone dell'interfaccia, riferimenti per la guida di stile | `tools/scenario/` (prompt e parametri) |
+| ElevenLabs (server MCP, con il login dell'utente) | Versi, effetti sonori, musica segnaposto | `tools/elevenlabs/` (prompt e parametri) |
+
+- **Personaggi:** costruiti in Godot (vedi "Stile dei personaggi"), non generati.
+- **Blender: rinviato.** La cartella `tools/blender/` resta vuota per il futuro.
+- **Qualità media nel prototipo:** modalità di generazione leggere ed economiche, texture da 512 px. La rifinitura arriva con il vertical slice.
+- **Poligoni degli oggetti Meshy tenuti bassi senza ritocchi a mano:** poligoni di destinazione bassi e remesh dalle opzioni di Meshy, texture limitate a 512 px dalle impostazioni d'importazione di Godot. Il `.glb` va direttamente in `assets/models/props/`. Se un oggetto sfora i budget delle specifiche (§6.2) si rigenera, non si corregge a mano.
+- **Generazioni ripetibili:** Meshy passa da uno script in `tools/meshy/` con la chiave in `.env`. Scenario ed ElevenLabs si usano dai loro server MCP, con il login dell'utente (decisione del 15 ottobre 2026: le chiavi API di questi due servizi non ci sono). Per ogni generazione si salvano in `tools/<strumento>/prompts.json` prompt, modello e parametri esatti, così chiunque nel team può rifarla. Dipendenze Python in `tools/requirements.txt`, dentro un ambiente virtuale.
+- **Chiavi API solo in `.env`** (i nomi delle variabili sono in `.env.example`; quelle di Scenario ed ElevenLabs sono facoltative): mai nel codice, mai nei log, mai committate.
+- **Prima di spendere crediti** mostra cosa generi, con i prompt esatti e una stima dei crediti, e aspetta l'ok. Lavora a lotti piccoli: 2-3 varianti, poi si sceglie.
+- Il risultato grezzo va in `source_assets/ai_raw/<strumento>/`, la versione pulita in `assets/`.
+- **Ogni asset generato va in `docs/registro-asset.csv`:** serve per la dichiarazione dei contenuti IA su Steam e per le licenze.
+- Per le API consulta sempre la documentazione ufficiale aggiornata: parametri e modelli cambiano spesso.
+
 ## Regole di design da rispettare sempre
 
 1. **Basta un dito.** Ogni azione si fa con un clic o un tocco singolo, al massimo con un trascinamento. Niente azioni solo da tastiera, solo col tasto destro, solo al passaggio del mouse o con più dita. Unica eccezione: il pizzico per lo zoom, che deve avere anche un'alternativa a un dito (pulsanti + e −).
@@ -103,6 +158,7 @@ Scene e script stanno insieme, nella cartella della funzione a cui servono: `gam
 7. **Il gioco funziona senza Steam.** Achievement, cloud e classifiche passano solo da `game/platform/`; il resto del codice non chiama mai Steam direttamente. Senza Steam (editor, mobile) quelle chiamate non fanno nulla e non generano errori.
 8. **Salvataggi** solo tramite il sistema di salvataggio, in `user://`. Si salva in automatico ai checkpoint: pausa pranzo (13:00) e fine livello.
 9. **Tono.** È satira: si ride del Manager e delle situazioni, mai di chi le subisce. Niente marchi, aziende o persone reali, niente immagini di meme esistenti.
+10. **Gommosi ma precisi.** La fisica dei personaggi fa ridere, ma non deve mai far fallire un'azione del giocatore.
 
 ## Asset
 
@@ -114,11 +170,12 @@ Scene e script stanno insieme, nella cartella della funzione a cui servono: `gam
 ## Git
 
 - Un ramo per compito (`feature/manager-lancio-pratiche`, `fix/navigazione-bloccata`), commit piccoli, messaggi in italiano.
-- Non si committano `.godot/` e `builds/`.
+- Non si committano `.godot/`, `builds/` e soprattutto `.env`, che contiene le chiavi delle API.
 - `export_presets.cfg` si committa; le credenziali di firma restano in `.godot/`, cioè in locale.
 
 ## Chiedi prima di
 
+- spendere crediti di Meshy, Scenario o ElevenLabs;
 - aggiungere plugin o dipendenze;
 - cambiare `project.godot` (renderer, risoluzione, autoload, InputMap);
 - riscrivere a mano scene `.tscn` complesse: per cambi grossi descrivi cosa fare nell'editor, oppure crea una scena nuova;
@@ -144,3 +201,5 @@ Scene e script stanno insieme, nella cartella della funzione a cui servono: `gam
 | Equipaggiamento / Statistiche | `equipment` / `stats` |
 | Stelle | `stars` |
 | Missione | `mission` |
+| Livello demo | `demo` |
+| Gommosità (slider di debug) | `wobble` |

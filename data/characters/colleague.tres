@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CharacterLook" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/characters/rubber/character_look.gd" id="1_look"]
+
+[resource]
+script = ExtResource("1_look")
+skin_color = Color(0.78, 0.6, 0.48, 1)
+torso_color = Color(0.55, 0.75, 0.45, 1)
+leg_color = Color(0.4, 0.33, 0.28, 1)
+shoe_color = Color(0.25, 0.2, 0.18, 1)
+has_hair = true
+hair_color = Color(0.15, 0.12, 0.1, 1)

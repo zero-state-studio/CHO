@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="CharacterLook" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/characters/rubber/character_look.gd" id="1_look"]
+
+[resource]
+script = ExtResource("1_look")
+head_radius = 0.2
+torso_radius = 0.25
+torso_height = 0.5
+torso_drop = 0.13
+arm_radius = 0.075
+upper_arm_length = 0.24
+lower_arm_length = 0.22
+hand_radius = 0.075
+leg_radius = 0.07
+upper_leg_length = 0.28
+lower_leg_length = 0.26
+foot_length = 0.2
+hip_width = 0.1
+skin_color = Color(0.98, 0.82, 0.68, 1)
+torso_color = Color(0.62, 0.82, 0.98, 1)
+leg_color = Color(0.32, 0.36, 0.45, 1)
+shoe_color = Color(0.95, 0.95, 0.95, 1)
+torso_gloss = 0.0
+has_smile = false
+has_hair = true
+hair_color = Color(0.45, 0.3, 0.18, 1)
+has_tie = false
+has_badge = true
+badge_color = Color(0.2, 0.6, 1, 1)
+has_backpack = true
+backpack_color = Color(0.98, 0.6, 0.15, 1)
