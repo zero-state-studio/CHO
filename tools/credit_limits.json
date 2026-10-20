@@ -1,0 +1,21 @@
+{
+  "_info": "Limiti dei crediti, letti da tools/common/credits.py, dagli script della pipeline e dall'hook .claude/hooks/credit_guard.py. Regola: nessuna generazione può far scendere i crediti rimasti sotto la riserva. I crediti rimasti si leggono dal vivo dalle API. Per cambiare un valore serve un commit: non esiste un'opzione per scavalcarli.",
+  "meshy": {
+    "unit": "crediti",
+    "reserve": 500,
+    "_note": "Piano Premium, nessuna ricarica automatica. Rimasti = saldo dell'API /v1/balance."
+  },
+  "elevenlabs": {
+    "unit": "crediti",
+    "reserve": 5000,
+    "key_quota": 30000,
+    "_note": "Piano Creator (121k crediti al mese), Pay as you go non attivo. Rimasti = limite meno usati del periodo (API /v1/user/subscription). Il tetto della chiave open-space (key_quota) lo applica ElevenLabs: qui è solo promemoria."
+  },
+  "scenario": {
+    "unit": "CU",
+    "reserve": 200,
+    "monthly_allowance": 5000,
+    "team_id": "team_boscukTE1AfcStGzcGfPCBSq",
+    "_note": "Piano Pro, 1 posto, Auto-Refill disabilitato, rinnovo il 26 di ogni mese. Rimasti = monthly_allowance meno il consumo del periodo di utenti e chiavi (API /v1/teams/{team_id}). Se cambia il piano, aggiornare monthly_allowance."
+  }
+}

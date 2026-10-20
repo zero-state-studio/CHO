@@ -32,6 +32,7 @@ from pathlib import Path
 import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from common.credits import check as check_credits  # noqa: E402
 from common.env import PROJECT_ROOT, require  # noqa: E402
 
 API_BASE: str = "https://api.meshy.ai/openapi"
@@ -158,9 +159,19 @@ def append_registry(file_name: str, prompt: str, note: str) -> None:
 
 # --- Main --------------------------------------------------------------------
 
+def ensure_credits(cost: int) -> None:
+    """Si ferma se la spesa farebbe scendere i crediti sotto la riserva (tools/credit_limits.json)."""
+    verdict = check_credits("meshy", cost)
+    print(f"    {verdict.message}")
+    if not verdict.allowed:
+        sys.exit("Limite dei crediti raggiunto: nessun task creato.")
+
+
 def generate(config: dict, prop: dict, existing_preview_id: str | None = None) -> dict:
     prop_id: str = prop["id"]
     print(f"\n== {prop_id}")
+    # Ricontrollo a ogni oggetto: nel frattempo qualcun altro del team può aver speso.
+    ensure_credits(int(config["credits"]["refine"]) if existing_preview_id else credits_per_prop(config))
     started: float = time.monotonic()
 
     if existing_preview_id:
@@ -239,13 +250,12 @@ def main() -> int:
     print(f"preview: {json.dumps(config['preview'])}")
     print(f"refine:  {json.dumps(config['refine'])}")
 
-    balance: int = get_balance()
-    print(f"\nSaldo attuale: {balance} crediti")
+    print()
     if not args.run:
+        print(f"    {check_credits('meshy', estimate).message}")
         print("Prova a secco: nessun task creato. Aggiungi --run per generare.")
         return 0
-    if balance < estimate:
-        sys.exit("Crediti insufficienti per questo lotto.")
+    ensure_credits(estimate)
 
     results: list[dict] = [generate(config, prop, args.preview_id) for prop in props]
     total_credits: int = sum(result["consumed_credits"] for result in results)

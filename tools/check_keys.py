@@ -22,14 +22,18 @@ ELEVENLABS_SUBSCRIPTION_URL: str = "https://api.elevenlabs.io/v1/user/subscripti
 # è gratuito e basta a verificare chiave e segreto.
 SCENARIO_MODELS_URL: str = "https://api.cloud.scenario.com/v1/models"
 
-# Variabili necessarie per ogni servizio. Scenario ed ElevenLabs si usano anche dai
-# server MCP con il login dell'utente: se le loro chiavi mancano, il controllo si salta.
+# Variabili necessarie per ogni servizio. Le chiavi facoltative mancanti non sono un
+# errore: senza quelle di Scenario il server MCP chiede il login dal browser, e quella
+# di ElevenLabs serve solo a chi genera audio.
 SERVICE_VARIABLES: dict[str, tuple[str, ...]] = {
     "Meshy": ("MESHY_API_KEY",),
     "ElevenLabs": ("ELEVENLABS_API_KEY",),
     "Scenario": ("SCENARIO_API_KEY", "SCENARIO_API_SECRET"),
 }
-OPTIONAL_SERVICES: tuple[str, ...] = ("ElevenLabs", "Scenario")
+OPTIONAL_SERVICES: dict[str, str] = {
+    "ElevenLabs": "serve solo per generare audio",
+    "Scenario": "il server MCP chiederà il login dal browser (solo per chi ha il posto)",
+}
 
 
 def check_meshy() -> str:
@@ -52,11 +56,22 @@ def check_elevenlabs() -> str:
         headers={"xi-api-key": require("ELEVENLABS_API_KEY")},
         timeout=TIMEOUT_SECONDS,
     )
+    if response.status_code == 401 and _error_status(response) == "missing_permissions":
+        return "chiave valida, ma senza il permesso Utente (leggi): crediti non leggibili"
     response.raise_for_status()
     data: dict = response.json()
     used: int = int(data.get("character_count", 0))
     limit: int = int(data.get("character_limit", 0))
     return f"piano {data.get('tier')}, crediti usati {used} su {limit} (restano {limit - used})"
+
+
+def _error_status(response: requests.Response) -> str:
+    """Il codice d'errore di ElevenLabs (es. missing_permissions), senza il resto del corpo."""
+    try:
+        detail = response.json().get("detail", {})
+    except ValueError:
+        return ""
+    return str(detail.get("status", "")) if isinstance(detail, dict) else ""
 
 
 def check_scenario() -> str:
@@ -82,7 +97,7 @@ def main() -> int:
         missing: list[str] = [name for name in SERVICE_VARIABLES[service] if not is_set(name)]
         if missing:
             if service in OPTIONAL_SERVICES:
-                print(f"{service}: chiave non configurata, si usa il server MCP con il login")
+                print(f"{service}: chiave non configurata, {OPTIONAL_SERVICES[service]}")
             else:
                 failures += 1
                 print(f"{service}: variabili vuote in .env: " + ", ".join(missing))

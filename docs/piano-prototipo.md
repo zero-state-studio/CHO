@@ -1,6 +1,6 @@
 # Piano del prototipo — Sprint 1, 2 e 3
 
-*Versione 0.3 del 15 ottobre 2026: Sprint 1 solo su Mac, mobile e Blender rinviati. Riferimento: specifiche §13.3, fase "Prototipo".*
+*Versione 0.3 del 15 ottobre 2026: Sprint 1 solo su Mac, mobile e Blender rinviati. Aggiornata il 20 ottobre: Blender torna disponibile tramite MCP. Riferimento: specifiche §13.3, fase "Prototipo".*
 
 ## Obiettivo
 
@@ -19,7 +19,7 @@ Alla fine dovete saper rispondere a cinque domande:
 - 8 persone, circa 5 ore a testa a settimana: un'ottantina di ore per sprint in tutto. Se sono di più o di meno, spostate i compiti "se avanza tempo".
 - Se partite lunedì 19 ottobre: **Sprint 1** dal 19 ottobre al 1° novembre, **Sprint 2** dal 2 al 15 novembre, **Sprint 3** dal 16 al 29 novembre.
 - Il prototipo passa da 2 a 3 sprint per fare spazio al livello demo (le specifiche sono aggiornate).
-- Qualità grafica media: Meshy, Scenario ed ElevenLabs nelle modalità più leggere; personaggi costruiti in Godot da forme primitive; poligoni degli oggetti Meshy tenuti bassi con le opzioni di Meshy e le impostazioni d'importazione di Godot. Blender è rinviato. La rifinitura arriva con il vertical slice.
+- Qualità grafica media: Meshy, Scenario ed ElevenLabs nelle modalità più leggere; personaggi costruiti in Godot da forme primitive; poligoni degli oggetti Meshy tenuti bassi con le opzioni di Meshy e le impostazioni d'importazione di Godot. Blender è di nuovo disponibile, tramite MCP, ma per cosa usarlo è ancora da decidere. La rifinitura arriva con il vertical slice.
 - I ruoli sono quelli delle specifiche (§13.1). Chi ricopre quale ruolo lo decidete alla prima riunione.
 
 ## Fuori dal prototipo
@@ -69,11 +69,11 @@ Regole: alla demo si gioca la **build esportata**, mai il progetto aperto nell'e
 
 **Se avanza tempo:** varianti del collega con accessori diversi.
 
-**Rinviato** (dopo lo Sprint 1, quando si riprende il mobile o serve Blender):
+**Rinviato** (dopo lo Sprint 1, quando si riprende il mobile):
 
 - esportazione Windows, Linux, Android e iOS, e prova su un telefono vero;
 - zoom col pizzico e test dei controlli col dito su uno schermo da 6 pollici;
-- Blender per tutti: script dei personaggi e pulizia dei modelli Meshy (`tools/blender/` resta vuota).
+- ~~Blender per tutti: script dei personaggi e pulizia dei modelli Meshy (`tools/blender/` resta vuota).~~ Ripreso il 20 ottobre: Blender si usa tramite MCP (vedi "Decisioni prese"); gli usi sono da decidere.
 
 ---
 
@@ -164,8 +164,12 @@ Prestazioni misurate:
 Decisioni prese:
 
 - 15 ottobre: lo Sprint 1 gira solo su macOS (editor e build esportata universale, firma ad-hoc); mobile e Blender rinviati (specifiche §7.3 🔄).
+- 20 ottobre: Blender torna disponibile per tutto il team, in locale, pilotato da Claude con il server MCP `mcp-for-blender` 2.2.1 (in `.mcp.json`, telemetria spenta, safe mode attivo). Provato con Blender 5.2.2. Per cosa usarlo è ancora aperto (specifiche §7.3 ❓).
+- 20 ottobre: ogni membro del team deve poter generare in autonomia, con le chiavi in `.env` (struttura e istruzioni in `.env.example`). Scenario passa dal server MCP del progetto (`.mcp.json`) con chiave e segreto, oppure col login dal browser se mancano; cambia la decisione del 15 ottobre. Da verificare: l'uso commerciale dell'audio dello Sprint 1, fatto coi modelli ElevenLabs dentro Scenario, con il piano di Scenario (specifiche §7.3, punto 4).
+- 20 ottobre: d'ora in poi l'audio si genera con ElevenLabs direttamente, col piano Creator già pagato (121k crediti al mese), invece che con le Creative Units di Scenario; si guadagna anche Voice Design per le voci dei personaggi. Il piano Creator non ha workspace di team: si usa una chiave dedicata `open-space` in `.env`, con accesso solo a Text to Speech, Effetti Sonori, Generazione Musicale, Generazione di Voce, Voci (Scrivi) e Utente (Leggi), e un tetto di crediti per periodo di rinnovo. Pay as you go non attivo. Scenario resta per texture, icone e concept.
+- 20 ottobre: regola ferrea sui crediti. Nessuna generazione può far scendere i crediti sotto una riserva (Meshy 500, ElevenLabs 5.000, Scenario 200 CU, in `tools/credit_limits.json`) né superare il tetto della chiave ElevenLabs (30.000). Controllata dal vivo dagli script e, per Claude, da un hook. Verificato sui siti: nessuna ricarica automatica su Meshy (Premium), Auto-Refill disabilitato su Scenario (Pro, 5.000 CU al mese, 1 posto), Pay as you go non attivo su ElevenLabs (Creator). Senza budget per sprint: le API di Meshy non danno il consumo per periodo sul piano Premium.
 - 15 ottobre: i personaggi si costruiscono in Godot da codice, con un solo scheletro e una sola mesh skinnata per personaggio (2.300-2.500 triangoli, una draw call più il contorno).
-- 15 ottobre: Scenario ed ElevenLabs si usano dai server MCP con il login dell'utente, salvando prompt e parametri in `tools/<strumento>/prompts.json` (non ci sono chiavi API per questi due servizi).
+- 15 ottobre 🔄 (cambiata il 20 ottobre, vedi sotto): Scenario ed ElevenLabs si usano dai server MCP con il login dell'utente, salvando prompt e parametri in `tools/<strumento>/prompts.json` (non ci sono chiavi API per questi due servizi).
 - 15 ottobre: audio con l'opzione "tutto ElevenLabs" (426 CU), invece degli effetti Sonilo (139 CU in tutto).
 - 16 ottobre: la pallina di carta resta una sfera fatta in Godot, senza modello Meshy.
 - I `.glb` di Meshy hanno l'origine al centro: il gioco li appoggia a terra da solo (`ModelFit`), non si ritoccano i file.

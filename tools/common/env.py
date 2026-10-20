@@ -17,10 +17,14 @@ ENV_FILE: Path = PROJECT_ROOT / ".env"
 
 
 def load_env() -> None:
-    """Carica .env dalla radice del progetto; si ferma se il file non esiste."""
+    """Carica .env dalla radice del progetto; si ferma se il file non esiste.
+
+    I valori di .env vincono su quelli già esportati nella shell (per esempio in
+    ~/.zshrc): gli script del progetto usano sempre le chiavi del progetto.
+    """
     if not ENV_FILE.exists():
         sys.exit(f"Manca {ENV_FILE.name}: copia .env.example in .env e inserisci le chiavi.")
-    load_dotenv(ENV_FILE, override=False)
+    load_dotenv(ENV_FILE, override=True)
 
 
 def require(name: str) -> str:

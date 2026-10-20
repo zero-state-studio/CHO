@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__(meshy|pixellab|blender|scenario)__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/credit_guard.py",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__blender__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/tools/blender/start_blender.sh",
+            "timeout": 90
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__scenario__(model_run|workflow_run)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/credit_guard.py",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

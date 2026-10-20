@@ -2,7 +2,10 @@
   "_info": "Audio del prototipo, generato dal server MCP di Scenario (modelli ElevenLabs e, per gli effetti nell'opzione B, Sonilo) con il login dell'utente. Per rifare una generazione: stesso model_id e stessi parameters con model_run, nel workspace indicato. Costi in Creative Units (CU), stimati con dry_run il 2026-10-15. Stato: generato il 2026-10-15 con l'opzione A (tutto ElevenLabs), approvata dall'utente in chat: 426 CU in tutto.",
   "workspace": {
     "team_id": "team_boscukTE1AfcStGzcGfPCBSq",
-    "project_id": "proj_e3G6TyKNVH3TRmGEBhrB8Aym"
+    "project_name": "CHO",
+    "project_id": "proj_pjJQB5LHKiGf1nrC5vKg5yzx",
+    "sprint1_project_id": "proj_e3G6TyKNVH3TRmGEBhrB8Aym",
+    "_note": "L'audio dello Sprint 1 qui sotto sta nel progetto Scenario sprint1_project_id. Dal 20 ottobre 2026 l'audio si genera con ElevenLabs direttamente; per Scenario il progetto è \"CHO\"."
   },
   "post_processing": "Versi: WAV 44,1 kHz direttamente dal modello. Effetti: WAV (Sonilo) oppure MP3 convertito in WAV con soundfile (ElevenLabs). Musica: MP3 convertito in OGG Vorbis con soundfile, con una dissolvenza incrociata tra fine e inizio per il loop.",
   "batches": [

@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "blender": {
+      "command": "uvx",
+      "args": ["mcp-for-blender==2.2.1"],
+      "env": {
+        "BLENDER_HOST": "localhost",
+        "BLENDER_PORT": "9876",
+        "DISABLE_TELEMETRY": "true",
+        "BLENDER_MCP_SAFE_MODE": "1"
+      }
+    },
+    "scenario": {
+      "type": "http",
+      "url": "https://mcp.scenario.com/mcp",
+      "headersHelper": "tools/scenario/mcp_headers.sh"
+    }
+  }
+}

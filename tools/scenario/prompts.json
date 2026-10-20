@@ -2,7 +2,10 @@
   "_info": "Generazioni Scenario del prototipo, fatte dal server MCP di Scenario con il login dell'utente. Per rifarle: stesso model_id e stessi parameters con model_run (team e progetto in 'workspace'). I costi sono in Creative Units (CU), stimati con dry_run. Esiti: 'chosen_asset' è la variante scelta (provvisoria, da approvare dall'art director), 'other_assets' le altre; i file grezzi sono in source_assets/ai_raw/scenario/<batch>/.",
   "workspace": {
     "team_id": "team_boscukTE1AfcStGzcGfPCBSq",
-    "project_id": "proj_e3G6TyKNVH3TRmGEBhrB8Aym"
+    "project_name": "CHO",
+    "project_id": "proj_pjJQB5LHKiGf1nrC5vKg5yzx",
+    "sprint1_project_id": "proj_e3G6TyKNVH3TRmGEBhrB8Aym",
+    "_note": "Dal 20 ottobre 2026 le generazioni vanno nel progetto Scenario \"CHO\", a cui appartiene la chiave API di .env. Le generazioni dello Sprint 1 (job e asset qui sotto) stanno nel progetto precedente, sprint1_project_id."
   },
   "batches": [
     {

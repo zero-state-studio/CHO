@@ -29,7 +29,7 @@ Nelle specifiche: ✅ deciso, 🔄 deciso ma cambiato, 💡 proposta, ❓ aperto
 
 **Fase: prototipo (Sprint 1-3).** Primo obiettivo: il **livello demo** (`game/levels/demo/`), una scena di prova per movimenti, personaggi gommosi, asset e suoni, da fare prima dei livelli veri. Grafica di qualità media, nessuna integrazione Steam, nessun menu completo. Vedi `docs/piano-prototipo.md`.
 
-**Per ora il prototipo gira solo su macOS**, nell'editor e in una build esportata: niente preset di esportazione, test o funzioni per Windows, Linux, Android o iOS. **Mobile e Blender sono rinviati.** Le regole sui controlli (un solo puntatore, niente azioni solo da tastiera o col tasto destro) restano valide, così non si rifanno i controlli quando arriva il mobile.
+**Per ora il prototipo gira solo su macOS**, nell'editor e in una build esportata: niente preset di esportazione, test o funzioni per Windows, Linux, Android o iOS. **Il mobile è rinviato.** Blender è di nuovo disponibile (decisione del 20 ottobre 2026), tramite MCP: vedi "Strumenti per grafica e audio". Le regole sui controlli (un solo puntatore, niente azioni solo da tastiera o col tasto destro) restano valide, così non si rifanno i controlli quando arriva il mobile.
 
 ## Stack tecnico
 
@@ -70,13 +70,20 @@ python3 -m venv tools/.venv && tools/.venv/bin/pip install -r tools/requirements
 # Controllare che le chiavi delle API funzionino (chiamate gratuite)
 tools/.venv/bin/python tools/check_keys.py
 
+# Crediti rimasti rispetto alla riserva, o controllo di una spesa (exit 2 se oltre il limite)
+python3 tools/credits.py
+python3 tools/credits.py meshy 30
+
 # Eseguire uno script della pipeline
 tools/.venv/bin/python tools/meshy/nome_script.py
+
+# Aprire Blender pronto per l'MCP (non fa nulla se è già aperto)
+tools/blender/start_blender.sh [file.blend]
 ```
 
 Gli script in `tests/` si compilano prima degli autoload: non possono nominare classi che usano `DebugSettings` (usano variabili `Variant`).
 
-`godot` è il nome dell'eseguibile nel PATH; se è diverso, usa `GODOT_BIN` da `.env` (su macOS di solito `/Applications/Godot.app/Contents/MacOS/Godot`). Blender per ora non si usa: non cercarlo, non installarlo e non scrivere script per Blender. Dopo ogni modifica agli script esegui almeno l'import headless e correggi errori e warning prima di dire che hai finito.
+`godot` è il nome dell'eseguibile nel PATH; se è diverso, usa `GODOT_BIN` da `.env` (su macOS di solito `/Applications/Godot.app/Contents/MacOS/Godot`). Per Blender vale lo stesso con `BLENDER_BIN` (su macOS di solito `/Applications/Blender.app/Contents/MacOS/Blender`). Dopo ogni modifica agli script esegui almeno l'import headless e correggi errori e warning prima di dire che hai finito.
 
 ## Struttura delle cartelle
 
@@ -133,15 +140,17 @@ I personaggi sono **pupazzi 3D gommosi e snodati, in stile Human Fall Flat**. È
 | Strumento | Per cosa | Script |
 |---|---|---|
 | Meshy (API) | Oggetti e arredi: scrivanie, sedie, stampante, macchinetta del caffè... | `tools/meshy/` |
-| Scenario (server MCP, con il login dell'utente) | Concept, texture, icone dell'interfaccia, riferimenti per la guida di stile | `tools/scenario/` (prompt e parametri) |
-| ElevenLabs (server MCP, con il login dell'utente) | Versi, effetti sonori, musica segnaposto | `tools/elevenlabs/` (prompt e parametri) |
+| Scenario (server MCP `scenario`, in `.mcp.json`) | Concept, texture, icone dell'interfaccia, riferimenti per la guida di stile | `tools/scenario/` (prompt e parametri) |
+| ElevenLabs (API, chiave in `.env`) | Versi, effetti sonori, musica segnaposto, voci dei personaggi (Voice Design) | `tools/elevenlabs/` |
+| Blender (server MCP `blender`, in locale) | Da decidere (specifiche §7.3 ❓) | `tools/blender/` |
 
 - **Personaggi:** costruiti in Godot (vedi "Stile dei personaggi"), non generati.
-- **Blender: rinviato.** La cartella `tools/blender/` resta vuota per il futuro.
+- **Blender tramite MCP:** il server `mcp-for-blender` (versione fissata in `.mcp.json`, con telemetria spenta e safe mode attivo) parla con l'add-on "MCP for Blender" dentro Blender. **Prima di usare uno strumento `mcp__blender__*`, esegui `tools/blender/start_blender.sh`** (accetta un `.blend` come argomento): se Blender è già in ascolto non fa nulla, altrimenti installa e attiva l'add-on se manca, apre Blender e aspetta che il server dell'add-on risponda sulla porta 9876. Lo lancia anche un hook in `.claude/settings.json` prima di ogni strumento `mcp__blender__*`. Se uno strumento risponde "Could not connect to Blender", rilancia lo script e riprova. Per cosa usare Blender non è ancora deciso: non sostituire da solo i personaggi costruiti in Godot né la regola "fuori budget si rigenera". Lascia spente le integrazioni del pannello che generano modelli (Hyper3D, Hunyuan3D, Meshy, Sketchfab): Meshy passa da `tools/meshy/`, così le generazioni restano ripetibili e registrate. Ogni script Blender che diventa parte della pipeline si salva in `tools/blender/`.
 - **Qualità media nel prototipo:** modalità di generazione leggere ed economiche, texture da 512 px. La rifinitura arriva con il vertical slice.
 - **Poligoni degli oggetti Meshy tenuti bassi senza ritocchi a mano:** poligoni di destinazione bassi e remesh dalle opzioni di Meshy, texture limitate a 512 px dalle impostazioni d'importazione di Godot. Il `.glb` va direttamente in `assets/models/props/`. Se un oggetto sfora i budget delle specifiche (§6.2) si rigenera, non si corregge a mano.
-- **Generazioni ripetibili:** Meshy passa da uno script in `tools/meshy/` con la chiave in `.env`. Scenario ed ElevenLabs si usano dai loro server MCP, con il login dell'utente (decisione del 15 ottobre 2026: le chiavi API di questi due servizi non ci sono). Per ogni generazione si salvano in `tools/<strumento>/prompts.json` prompt, modello e parametri esatti, così chiunque nel team può rifarla. Dipendenze Python in `tools/requirements.txt`, dentro un ambiente virtuale.
-- **Chiavi API solo in `.env`** (i nomi delle variabili sono in `.env.example`; quelle di Scenario ed ElevenLabs sono facoltative): mai nel codice, mai nei log, mai committate.
+- **Generazioni ripetibili:** Meshy passa da uno script in `tools/meshy/` con la chiave in `.env`. Scenario si usa dal server MCP `scenario` del progetto (`.mcp.json`), nel progetto Scenario **CHO** (id in `tools/scenario/prompts.json`): con `SCENARIO_API_KEY` e `SCENARIO_API_SECRET` in `.env` si autentica con la chiave (lo script `tools/scenario/mcp_headers.sh` prepara l'header), senza chiave chiede il login dal browser (decisione del 20 ottobre 2026). ElevenLabs si usa direttamente con `ELEVENLABS_API_KEY` in `.env` (decisione del 20 ottobre 2026): è la chiave `open-space` dell'account Creator, con permessi limitati e un tetto di crediti per periodo di rinnovo. L'audio dello Sprint 1, fatto coi modelli ElevenLabs dentro Scenario, resta valido. Gli script leggono `.env` con la precedenza sulle variabili della shell. Per ogni generazione si salvano in `tools/<strumento>/prompts.json` prompt, modello e parametri esatti, così chiunque nel team può rifarla. Dipendenze Python in `tools/requirements.txt`, dentro un ambiente virtuale.
+- **Chiavi API solo in `.env`** (i nomi delle variabili, a cosa servono e dove si creano sono in `.env.example`; quelle di Scenario sono facoltative ma consigliate; quella di ElevenLabs serve a chi genera audio): mai nel codice, mai nei log, mai committate.
+- **Limiti dei crediti: regola ferrea.** Nessuna generazione può far scendere i crediti rimasti di Meshy, Scenario o ElevenLabs sotto la riserva di `tools/credit_limits.json`, né superare il tetto della chiave. I crediti si leggono dal vivo (`python3 tools/credits.py`). Gli script della pipeline si fermano da soli (`tools/common/credits.py`); per Claude lo impone l'hook `.claude/hooks/credit_guard.py`: Meshy dall'MCP è bloccato (si usa solo lo script), Pixellab e `generate_3d` di Blender sono bloccati, e su Scenario ogni `model_run` o `workflow_run` vero passa solo dopo una stima `dry_run=true` con gli stessi identici parametri e se rientra nei limiti. Non aggirare la guardia (chiamate dirette alle API, altri strumenti): se un limite blocca il lavoro, dillo e lascia decidere al team. I limiti si cambiano solo con un commit su `tools/credit_limits.json`.
 - **Prima di spendere crediti** mostra cosa generi, con i prompt esatti e una stima dei crediti, e aspetta l'ok. Lavora a lotti piccoli: 2-3 varianti, poi si sceglie.
 - Il risultato grezzo va in `source_assets/ai_raw/<strumento>/`, la versione pulita in `assets/`.
 - **Ogni asset generato va in `docs/registro-asset.csv`:** serve per la dichiarazione dei contenuti IA su Steam e per le licenze.
